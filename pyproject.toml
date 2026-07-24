@@ -1,0 +1,40 @@
+[project]
+name = "smds-vmdm-ai-services"
+version = "0.1.0"
+description = "AI/document-processing backend for the Maersk vendor MDM portal — document extraction (Azure Document Intelligence + Azure OpenAI), and a home for future AI capabilities."
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "python-multipart>=0.0.12",
+    "azure-ai-documentintelligence>=1.0.0",  # default OCR path
+    "openai>=1.54",       # Azure OpenAI client; also drives the optional free-tier providers
+    "pymupdf>=1.24",      # page-image rendering for the vision LLM; free-path text fallback
+    "pillow>=11.0",
+    "structlog>=24.4",
+]
+
+[project.optional-dependencies]
+# Free local OCR for scanned docs — only needed when DOCAI_OCR_PROVIDER=tesseract
+# (also requires the system `tesseract` binary). Not needed on the default Azure path.
+tesseract = ["pytesseract>=0.3.13"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "httpx>=0.27",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]

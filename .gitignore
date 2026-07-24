@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.pytest_cache/
+uv.lock
+dist/
+# Never commit real vendor documents — they carry PAN/GSTIN/bank PII.
+tests/fixtures/**/*.pdf
+tests/fixtures/**/*.jpg
+tests/fixtures/**/*.jpeg
+tests/fixtures/**/*.png
+!tests/fixtures/**/*.redacted.*

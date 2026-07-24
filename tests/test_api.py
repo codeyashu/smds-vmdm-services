@@ -53,3 +53,20 @@ def test_extract_valid_pdf_but_azure_unconfigured_returns_503():
     files = {"file": ("gst.pdf", io.BytesIO(b"%PDF-1.4 fake"), "application/pdf")}
     r = client.post("/v1/extract", files=files, data={"countryCode": "IN"})
     assert r.status_code == 503
+
+
+def test_extract_success_returns_patches(monkeypatch):
+    import io
+
+    from app.documents.extract import pipeline
+    from tests.fakes import GST_ENVELOPE, FakeLlm, FakeOcr
+
+    monkeypatch.setattr(pipeline, "get_ocr_provider", lambda: FakeOcr())
+    monkeypatch.setattr(pipeline, "get_llm_provider", lambda: FakeLlm([GST_ENVELOPE]))
+
+    files = {"file": ("gst.pdf", io.BytesIO(b"%PDF-1.4 fake"), "application/pdf")}
+    r = client.post("/v1/extract", files=files, data={"countryCode": "IN"})
+    assert r.status_code == 200
+    body = r.json()
+    assert body["docType"] == "IN_GST_CERTIFICATE"
+    assert any(p["path"].endswith("taxIdentificationNumber") for p in body["patches"])

@@ -70,3 +70,31 @@ class CoiExtraction(BaseModel):
     date_of_incorporation: str | None = None
     registered_office: ExtractedAddress | None = None
     confidence: float = 0.0
+
+
+# Every recognised doc type, plus the sentinel for "couldn't classify this document".
+# ExtractionEnvelope.doc_type is typed `str` (not a Literal) deliberately — the pipeline
+# checks membership in this set itself and treats anything else as effectively UNKNOWN,
+# so a slightly-off model response degrades gracefully instead of hard-failing to parse.
+ENVELOPE_DOC_TYPES: frozenset[str] = frozenset(
+    {
+        "IN_PAN_CARD",
+        "IN_GST_CERTIFICATE",
+        "IN_CANCELLED_CHEQUE",
+        "IN_UDYAM_CERTIFICATE",
+        "IN_CERTIFICATE_OF_INCORPORATION",
+        "UNKNOWN",
+    }
+)
+
+
+class ExtractionEnvelope(BaseModel):
+    """The single LLM response for one document: classification + extraction together."""
+
+    doc_type: str
+    doc_type_confidence: float = 0.0
+    pan: PanExtraction | None = None
+    gst: GstExtraction | None = None
+    cheque: ChequeExtraction | None = None
+    udyam: UdyamExtraction | None = None
+    coi: CoiExtraction | None = None

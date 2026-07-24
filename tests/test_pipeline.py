@@ -6,7 +6,7 @@ import pytest
 
 from app.documents.extract import pipeline
 from app.documents.extract.errors import ExtractionUnavailable, ExtractionUpstreamError
-from tests.fakes import GST_ENVELOPE, FailingOcr, FakeLlm, FakeOcr
+from tests.fakes import GST_ENVELOPE, FailingOcr, FailingOnRetryLlm, FakeLlm, FakeOcr
 
 
 async def _run(content=b"%PDF-fake", mime="application/pdf", country="IN"):
@@ -64,6 +64,17 @@ async def test_raises_upstream_error_after_two_malformed_responses(monkeypatch):
         pipeline,
         "get_llm_provider",
         lambda: FakeLlm([{"bad": "payload"}, {"still": "bad"}]),
+    )
+    with pytest.raises(ExtractionUpstreamError):
+        await _run()
+
+
+async def test_raises_upstream_error_when_retry_hits_transport_error(monkeypatch):
+    monkeypatch.setattr(pipeline, "get_ocr_provider", lambda: FakeOcr())
+    monkeypatch.setattr(
+        pipeline,
+        "get_llm_provider",
+        lambda: FailingOnRetryLlm({"bad": "payload"}, RuntimeError("connection reset")),
     )
     with pytest.raises(ExtractionUpstreamError):
         await _run()

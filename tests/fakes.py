@@ -33,6 +33,28 @@ class FakeLlm:
         return self._responses.pop(0)
 
 
+class FailingOnRetryLlm:
+    """Returns a malformed payload on the first call (triggering the pipeline's parse-error
+    retry), then raises a transport-style exception on the retry (second) call. Used to exercise
+    the `_complete_envelope_with_retry` branch that must convert ANY retry-attempt failure —
+    not just a narrow parse-error tuple — into `ExtractionUpstreamError`.
+    """
+
+    id = "failing-on-retry-llm"
+    supports_vision = True
+
+    def __init__(self, first_response: dict, retry_exception: Exception):
+        self._first_response = first_response
+        self._retry_exception = retry_exception
+        self._calls = 0
+
+    async def complete_json(self, messages, *, schema=None, timeout_s=30.0) -> dict:
+        self._calls += 1
+        if self._calls == 1:
+            return self._first_response
+        raise self._retry_exception
+
+
 GST_ENVELOPE: dict = {
     "doc_type": "IN_GST_CERTIFICATE",
     "doc_type_confidence": 0.97,

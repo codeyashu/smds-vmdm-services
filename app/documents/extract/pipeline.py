@@ -17,7 +17,7 @@ from app.documents.extract.errors import ExtractionUnavailable, ExtractionUpstre
 from app.documents.extract.prompts.india.envelope import build_envelope_messages, envelope_json_schema
 from app.documents.extract.schemas.india import ENVELOPE_DOC_TYPES, ExtractionEnvelope
 from app.documents.mapping.to_patches import Patch, patches_from_cheque, patches_from_gst, patches_from_pan
-from app.documents.rules.crosscheck import ExtractedIdentity, run_all
+from app.documents.rules.crosscheck import CrossCheck, ExtractedIdentity, run_all
 from app.providers.llm.base import LlmMessage
 from app.providers.llm.factory import get_llm_provider
 from app.providers.ocr.factory import get_ocr_provider
@@ -112,6 +112,30 @@ def _patches_and_unmapped(envelope: ExtractionEnvelope) -> tuple[list[Patch], li
     return patches, unmapped
 
 
+# Tax slots the PAN/GSTIN identity cross-checks can invalidate. to_patches.py promises
+# `pre_selected` is never true for a value in a failing cross-check, but patches and checks are
+# computed independently below — so the join happens here.
+_IDENTITY_TAX_TYPE_CODES = frozenset({"TAXNO3", "TAXNO4"})  # PAN, GSTIN
+
+# Checks whose failure implicates the PAN/GSTIN values themselves. `ifsc_shape` is excluded on
+# purpose: a malformed IFSC says nothing about the PAN, and the IFSC patch is never pre-selected
+# anyway (to_patches.patches_from_cheque hardcodes pre_selected=False pending bank-master lookup).
+_IDENTITY_CHECK_IDS = frozenset({"gstin_contains_pan", "pan_shape", "gstin_shape"})
+
+
+def _clear_pre_select_for_failed_identity_checks(patches: list[Patch], checks: list[CrossCheck]) -> None:
+    """Mutate `patches` in place: drop pre-selection from the PAN/GSTIN patches when an identity
+    cross-check failed. Deliberately narrow — patches those checks do not implicate (trading
+    name, address, bank fields) keep whatever pre_selected verdict the mapping layer gave them.
+    """
+    failed = {c.id for c in checks if c.status == "fail"}
+    if not failed & _IDENTITY_CHECK_IDS:
+        return
+    for patch in patches:
+        if patch.tax_type_code in _IDENTITY_TAX_TYPE_CODES:
+            patch.pre_selected = False
+
+
 async def run_extraction(content: bytes, mime: str, country: str) -> ExtractResult:
     settings = get_settings()
     ocr = get_ocr_provider()
@@ -143,6 +167,7 @@ async def run_extraction(content: bytes, mime: str, country: str) -> ExtractResu
 
     patches, unmapped = _patches_and_unmapped(envelope)
     checks = run_all(_identity_for(envelope))
+    _clear_pre_select_for_failed_identity_checks(patches, checks)
 
     log.info(
         "extract.completed",

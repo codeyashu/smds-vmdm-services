@@ -94,6 +94,82 @@ async def test_runs_gstin_pan_crosscheck_when_both_present(monkeypatch):
     assert statuses.get("gstin_contains_pan") == "pass"
 
 
+async def test_failing_crosscheck_clears_pre_selected_on_pan_and_gstin(monkeypatch):
+    """to_patches.py's contract: pre_selected is never true for a value that is part of a
+    failing cross-check. A GSTIN embedding AABCA1234F against a PAN block reading ZZZZZ9999Z
+    fails gstin_contains_pan, so neither identifier may arrive pre-ticked."""
+    envelope = {
+        "doc_type": "IN_GST_CERTIFICATE",
+        "doc_type_confidence": 0.95,
+        "gst": {"gstin": "27AABCA1234F1Z5", "trade_name": "ACME LOGISTICS", "confidence": 0.98},
+        "pan": {"pan": "ZZZZZ9999Z", "confidence": 0.9},
+    }
+    monkeypatch.setattr(pipeline, "get_ocr_provider", lambda: FakeOcr())
+    monkeypatch.setattr(pipeline, "get_llm_provider", lambda: FakeLlm([envelope]))
+    result = await _run()
+
+    by_tax = {p.tax_type_code: p for p in result.patches if p.tax_type_code}
+    assert by_tax["TAXNO3"].pre_selected is False, "PAN patch must not be pre-selected"
+    assert by_tax["TAXNO4"].pre_selected is False, "GSTIN patch must not be pre-selected"
+
+    statuses = {c["id"]: c["status"] for c in result.cross_checks}
+    assert statuses["gstin_contains_pan"] == "fail"
+
+
+async def test_failing_crosscheck_leaves_unrelated_patches_pre_selected(monkeypatch):
+    """The clearing is narrowly scoped: gstin_contains_pan implicates only PAN/GSTIN, so a
+    high-confidence trading name from the same document keeps its pre-selection."""
+    envelope = {
+        "doc_type": "IN_GST_CERTIFICATE",
+        "doc_type_confidence": 0.95,
+        "gst": {"gstin": "27AABCA1234F1Z5", "trade_name": "ACME LOGISTICS", "confidence": 0.98},
+        "pan": {"pan": "ZZZZZ9999Z", "confidence": 0.9},
+    }
+    monkeypatch.setattr(pipeline, "get_ocr_provider", lambda: FakeOcr())
+    monkeypatch.setattr(pipeline, "get_llm_provider", lambda: FakeLlm([envelope]))
+    result = await _run()
+
+    trading = next(p for p in result.patches if p.path == "tradingName")
+    assert trading.pre_selected is True
+
+
+async def test_passing_crosscheck_keeps_pan_and_gstin_pre_selected(monkeypatch):
+    envelope = {
+        "doc_type": "IN_GST_CERTIFICATE",
+        "doc_type_confidence": 0.95,
+        "gst": {"gstin": "27AABCA1234F1Z5", "confidence": 0.98},
+        "pan": {"pan": "AABCA1234F", "confidence": 0.9},
+    }
+    monkeypatch.setattr(pipeline, "get_ocr_provider", lambda: FakeOcr())
+    monkeypatch.setattr(pipeline, "get_llm_provider", lambda: FakeLlm([envelope]))
+    result = await _run()
+
+    by_tax = {p.tax_type_code: p for p in result.patches if p.tax_type_code}
+    assert by_tax["TAXNO3"].pre_selected is True
+    assert by_tax["TAXNO4"].pre_selected is True
+
+
+async def test_failing_ifsc_check_does_not_clear_pan_or_gstin_pre_selection(monkeypatch):
+    """A malformed IFSC says nothing about the PAN/GSTIN — only checks that implicate those
+    identifiers may clear their pre-selection."""
+    envelope = {
+        "doc_type": "IN_GST_CERTIFICATE",
+        "doc_type_confidence": 0.95,
+        "gst": {"gstin": "27AABCA1234F1Z5", "confidence": 0.98},
+        "pan": {"pan": "AABCA1234F", "confidence": 0.9},
+        "cheque": {"ifsc": "NOT-AN-IFSC", "confidence": 0.9},
+    }
+    monkeypatch.setattr(pipeline, "get_ocr_provider", lambda: FakeOcr())
+    monkeypatch.setattr(pipeline, "get_llm_provider", lambda: FakeLlm([envelope]))
+    result = await _run()
+
+    statuses = {c["id"]: c["status"] for c in result.cross_checks}
+    assert statuses["ifsc_shape"] == "fail"
+    by_tax = {p.tax_type_code: p for p in result.patches if p.tax_type_code}
+    assert by_tax["TAXNO3"].pre_selected is True
+    assert by_tax["TAXNO4"].pre_selected is True
+
+
 async def test_udyam_doc_type_surfaces_as_unmapped_not_a_patch(monkeypatch):
     envelope = {
         "doc_type": "IN_UDYAM_CERTIFICATE",

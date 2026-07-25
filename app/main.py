@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from fastapi import FastAPI
 
-from app.api.v1 import doctypes, extract
+from app.api.v1 import company_search, doctypes, extract, nl_search
 from app.core.config import get_settings
 from app.core.logging import configure_logging
 from app.providers.llm.factory import get_llm_provider
@@ -13,6 +13,8 @@ configure_logging()
 app = FastAPI(title="smds-vmdm-ai-services", version="0.1.0")
 app.include_router(extract.router)
 app.include_router(doctypes.router)
+app.include_router(company_search.router)
+app.include_router(nl_search.router)
 
 
 @app.get("/health")

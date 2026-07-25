@@ -14,6 +14,11 @@ _SIGNATURES: list[tuple[bytes, str]] = [
     (b"%PDF-", "application/pdf"),
     (b"\xff\xd8\xff", "image/jpeg"),
     (b"\x89PNG\r\n\x1a\n", "image/png"),
+    # .docx is a zip archive — PK\x03\x04 is also the generic zip signature, so this
+    # accepts any zip-based file as "docx" at the byte-sniff level. A non-Word zip would
+    # fail later when the OCR provider tries to parse it as a document; acceptable for a
+    # POC where the upload surface is a vendor-onboarding form, not a general file uploader.
+    (b"PK\x03\x04", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
 ]
 
 

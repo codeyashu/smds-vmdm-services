@@ -36,7 +36,12 @@ class Settings(BaseSettings):
     max_file_bytes: int = 10 * 1024 * 1024
     max_pages: int = 20
     max_batch_files: int = 5
-    allowed_mime: tuple[str, ...] = ("application/pdf", "image/jpeg", "image/png")
+    allowed_mime: tuple[str, ...] = (
+        "application/pdf",
+        "image/jpeg",
+        "image/png",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    )
 
     # Service auth — token the portal BFF presents. When unset, auth is disabled (dev only).
     service_bearer_token: str | None = None

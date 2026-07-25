@@ -1,14 +1,16 @@
-# smds-vmdm-bff-services
+# smds-vmdm-services
 
-BFF-side backend for the Maersk vendor MDM portal (`smds-vmdmportal`) — the home for logic that
-doesn't belong in the portal's own Next.js BFF layer: document upload & auto-extraction (India
-first) — accepts a PAN card, GST certificate, cancelled cheque, etc., and returns portal-shaped
-field patches for the steward to review in the existing Current-vs-Incoming field picker — plus
-company-search and natural-language-search LLM assist (address/name/tax normalization, term
-expansion, match adjudication, semantic similarity, query parsing) migrated out of the portal.
-The repo name is deliberately generic (not `ai-services` or `docai-only`) so both AI-backed
-capabilities and plain business logic for the portal land here too, sharing the same provider
-layer, auth, and deploy pipeline instead of each spinning up its own service.
+Backend for the Maersk vendor MDM portal (`smds-vmdmportal`). The portal's own Next.js API
+routes are its BFF layer (see `smds-vmdmportal`'s ADR 0001); this repo is a downstream service
+that BFF proxies to for logic too heavy or too AI-heavy to live in the portal itself: document
+upload & auto-extraction (India first) — accepts a PAN card, GST certificate, cancelled cheque,
+etc., and returns portal-shaped field patches for the steward to review in the existing
+Current-vs-Incoming field picker — plus company-search and natural-language-search LLM assist
+(address/name/tax normalization, term expansion, match adjudication, semantic similarity, query
+parsing) migrated out of the portal. The repo name is deliberately generic (not `ai-services` or
+`docai-only`) so both AI-backed capabilities and plain business logic for the portal land here
+too, sharing the same provider layer, auth, and deploy pipeline instead of each spinning up its
+own service.
 
 Uploaded files are **ephemeral**: held in memory for the request only, deleted after, never
 persisted. These documents carry PAN / GSTIN / bank-account PII.

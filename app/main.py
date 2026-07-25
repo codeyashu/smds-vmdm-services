@@ -10,7 +10,7 @@ from app.providers.ocr.factory import get_ocr_provider
 
 configure_logging()
 
-app = FastAPI(title="smds-vmdm-bff-services", version="0.1.0")
+app = FastAPI(title="smds-vmdm-services", version="0.1.0")
 app.include_router(extract.router)
 app.include_router(doctypes.router)
 app.include_router(company_search.router)

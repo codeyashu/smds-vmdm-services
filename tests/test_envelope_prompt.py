@@ -51,3 +51,65 @@ def test_images_capped_at_five():
 def test_envelope_json_schema_matches_model_properties():
     schema = envelope_json_schema()
     assert schema["properties"].keys() >= {"doc_type", "pan", "gst", "cheque", "udyam", "coi"}
+
+
+def _object_schemas(schema: dict) -> list[tuple[str, dict]]:
+    """Every object-typed subschema in the document, as (json-pointer-ish label, schema)."""
+    found: list[tuple[str, dict]] = []
+
+    def walk(node, path: str) -> None:
+        if isinstance(node, list):
+            for i, item in enumerate(node):
+                walk(item, f"{path}[{i}]")
+            return
+        if not isinstance(node, dict):
+            return
+        if node.get("type") == "object" or "properties" in node:
+            found.append((path or "<root>", node))
+        for key, child in node.items():
+            if key in ("$defs", "properties", "definitions"):
+                for name, sub in child.items():
+                    walk(sub, f"{path}/{key}/{name}")
+            elif key in ("anyOf", "oneOf", "allOf", "prefixItems", "items"):
+                walk(child, f"{path}/{key}")
+
+    walk(schema, "")
+    return found
+
+
+def test_envelope_json_schema_is_openai_strict_mode_compatible():
+    """OpenAI/Azure structured outputs with strict=True requires, on EVERY object:
+    additionalProperties: false, and `required` listing every declared property."""
+    schema = envelope_json_schema()
+    objects = _object_schemas(schema)
+
+    # Root + the six nested models must all be present, or the walker is not finding them.
+    assert len(objects) >= 7, f"expected root + 6 $defs objects, walked {len(objects)}"
+
+    for label, obj in objects:
+        assert obj.get("additionalProperties") is False, f"{label} missing additionalProperties: false"
+        prop_names = set(obj.get("properties", {}))
+        required = set(obj.get("required", []))
+        assert required == prop_names, f"{label} required {sorted(required)} != properties {sorted(prop_names)}"
+
+
+def test_envelope_json_schema_covers_every_nested_model():
+    schema = envelope_json_schema()
+    assert set(schema["$defs"]) == {
+        "ChequeExtraction",
+        "CoiExtraction",
+        "ExtractedAddress",
+        "GstExtraction",
+        "PanExtraction",
+        "UdyamExtraction",
+    }
+
+
+def test_envelope_json_schema_does_not_mutate_the_pydantic_model_schema():
+    """The transform must build a copy — the pydantic model's own schema stays untouched."""
+    from app.documents.extract.schemas.india import ExtractionEnvelope
+
+    envelope_json_schema()
+    pristine = ExtractionEnvelope.model_json_schema()
+    assert "additionalProperties" not in pristine
+    assert pristine["required"] == ["doc_type"]

@@ -7,6 +7,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException
 from sqlmodel import Session, select
 
+from app.documents.mapping.field_paths import WRITABLE_DOC_TYPES
 from app.requirements.models import DocumentRequirement
 from app.requirements.store import get_engine
 
@@ -24,5 +25,15 @@ async def doctypes(country: str = "IN"):
             .where(DocumentRequirement.country_code == normalized)
             .order_by(DocumentRequirement.sort_order)
         ).all()
-        doc_types = [{"id": r.doc_type, "label": r.label, "tier": 1 if r.is_mandatory else 2} for r in rows]
+        # tier 1 = the extractor has an ingest write target for this doc type; tier 2 = it is
+        # recognised but only ever surfaced as `unmapped`. NOT derived from is_mandatory: that
+        # flag is admin-editable and says nothing about whether a write path exists.
+        doc_types = [
+            {
+                "id": r.doc_type,
+                "label": r.label,
+                "tier": 1 if r.doc_type in WRITABLE_DOC_TYPES else 2,
+            }
+            for r in rows
+        ]
     return {"country": normalized, "docTypes": doc_types}

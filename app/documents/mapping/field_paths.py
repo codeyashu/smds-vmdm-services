@@ -81,6 +81,23 @@ IN_NOT_APPLICABLE = frozenset(
 )
 
 
+# Doc types the extractor can turn into applyable portal patches ("tier 1"). Everything else
+# is tier 2: recognised and surfaced for reviewer visibility, but with no ingest write target,
+# so it only ever comes back in ExtractResult.unmapped.
+#
+# MUST stay in sync with app/documents/extract/pipeline.py's `_patches_and_unmapped` — a doc
+# type belongs here exactly when that function routes it through a patches_from_* mapper.
+# This is deliberately independent of the admin-editable `is_mandatory` flag: marking Udyam
+# mandatory does not give it a write path.
+WRITABLE_DOC_TYPES = frozenset(
+    {
+        "IN_PAN_CARD",
+        "IN_GST_CERTIFICATE",
+        "IN_CANCELLED_CHEQUE",
+    }
+)
+
+
 def passes_field_regex(field_name: str, value: str) -> bool:
     """True when no regex is known for the field, or the value matches it."""
     pattern = IN_FIELD_REGEX.get(field_name)

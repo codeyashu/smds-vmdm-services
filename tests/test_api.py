@@ -27,6 +27,37 @@ def test_doctypes_in():
     assert {"IN_PAN_CARD", "IN_GST_CERTIFICATE", "IN_CANCELLED_CHEQUE"} <= ids
 
 
+def test_doctypes_tier_reflects_ingest_write_target_not_mandatory_flag():
+    """Tier 1 == the extractor can produce applyable patches for it. Tier 2 doc types
+    (Udyam, COI) only ever surface as `unmapped`, whatever their is_mandatory flag says."""
+    body = client.get("/v1/doctypes?country=IN").json()
+    tiers = {d["id"]: d["tier"] for d in body["docTypes"]}
+    assert tiers["IN_PAN_CARD"] == 1
+    assert tiers["IN_GST_CERTIFICATE"] == 1
+    assert tiers["IN_CANCELLED_CHEQUE"] == 1
+    assert tiers["IN_UDYAM_CERTIFICATE"] == 2
+    assert tiers["IN_CERTIFICATE_OF_INCORPORATION"] == 2
+
+
+def test_doctypes_tier_ignores_is_mandatory_changes():
+    """An admin marking Udyam mandatory must not silently relabel it tier 1 — it still has
+    no ingest write path. Conversely an optional PAN card stays tier 1."""
+    udyam = next(
+        row
+        for row in client.get("/v1/doc-requirements?country=IN").json()
+        if row["doc_type"] == "IN_UDYAM_CERTIFICATE"
+    )
+    promoted = client.put(
+        f"/v1/doc-requirements/{udyam['id']}",
+        json={**{k: v for k, v in udyam.items() if k != "id"}, "is_mandatory": True},
+    )
+    assert promoted.status_code == 200
+    assert promoted.json()["is_mandatory"] is True
+
+    tiers = {d["id"]: d["tier"] for d in client.get("/v1/doctypes?country=IN").json()["docTypes"]}
+    assert tiers["IN_UDYAM_CERTIFICATE"] == 2
+
+
 def test_doctypes_non_in_rejected():
     assert client.get("/v1/doctypes?country=US").status_code == 422
 

@@ -119,10 +119,24 @@ DOCAI_MAX_FILE_BYTES=10485760   DOCAI_MAX_PAGES=20   DOCAI_MAX_BATCH_FILES=5
 Install: `uv sync` covers the default Azure path. `uv sync --extra tesseract` only if you opt
 into local OCR (also needs the system `tesseract` binary).
 
+## Document requirements rule engine
+
+`GET /v1/doc-requirements?country=IN` lists which document types a country expects (mandatory
+vs optional) — this is what backs `GET /v1/doctypes` and the portal's requirements checklist.
+Writes (`POST`/`PUT`/`DELETE /v1/doc-requirements[/{id}]`) are gated by
+`DOCAI_SERVICE_BEARER_TOKEN` when one is set; open otherwise (dev only).
+
+Backed by SQLite at `DOCAI_DB_PATH` (default `./data/docai.db`), seeded on first run with
+India's defaults: PAN card, GST certificate, and cancelled cheque are mandatory; Udyam
+certificate and Certificate of Incorporation are optional. This store holds document *type*
+configuration only — never an uploaded document's bytes, which stay ephemeral as documented
+above.
+
 ## Status
 
-P0 scaffold complete: provider-abstracted OCR + LLM layer, pure extraction/mapping/validation
-logic, tests, API skeleton — all green with zero configuration. Remaining P0 networked step:
-wire `run_extraction` to actually call the selected OCR + LLM providers end to end, and add
-one redacted GST fixture as a live smoke test. See the portal-side implementation plan
-(`smds-vmdmportal`, plan doc) for P1–P4 (portal UI wiring, bank docs, edit-flow, batch upload).
+Extraction pipeline is wired end to end: `POST /v1/extract` runs OCR -> a single classify+extract
+LLM call -> deterministic cross-checks -> portal-shaped patches, against real Azure DI + Azure
+OpenAI (or any configured provider). Accepts PDF, JPEG, PNG, and DOCX. The document-requirements
+rule engine (SQLite + CRUD API) is live and seeded for India. Portal-side wiring (upload UI,
+apply-to-form, drift detection, requirements admin screen) is a separate plan in the
+`smds-vmdmportal` repo.

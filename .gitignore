@@ -6,6 +6,7 @@ __pycache__/
 .pytest_cache/
 uv.lock
 dist/
+data/
 # Never commit real vendor documents — they carry PAN/GSTIN/bank PII.
 tests/fixtures/**/*.pdf
 tests/fixtures/**/*.jpg

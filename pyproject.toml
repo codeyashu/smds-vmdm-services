@@ -1,7 +1,7 @@
 [project]
-name = "smds-vmdm-ai-services"
+name = "smds-vmdm-bff-services"
 version = "0.1.0"
-description = "AI/document-processing backend for the Maersk vendor MDM portal — document extraction (Azure Document Intelligence + Azure OpenAI), and a home for future AI capabilities."
+description = "BFF-side backend for the Maersk vendor MDM portal — document extraction (Azure Document Intelligence + Azure OpenAI), company-search/nl-search LLM assist, and a home for business logic and AI capabilities moving out of the portal."
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.115",

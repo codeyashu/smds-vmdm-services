@@ -21,9 +21,21 @@ from app.providers.llm.base import LlmProvider
 from app.providers.llm.openai_compatible import OpenAiCompatibleProvider
 
 
+def _normalize_aoai_endpoint(endpoint: str) -> str:
+    """Strip deployment paths and query strings — portal often stores the full chat URL."""
+    cleaned = endpoint.strip()
+    if "?" in cleaned:
+        cleaned = cleaned.split("?", 1)[0]
+    marker = "/openai/"
+    idx = cleaned.find(marker)
+    if idx != -1:
+        cleaned = cleaned[:idx]
+    return cleaned.rstrip("/")
+
+
 def _pref() -> str:
     p = os.getenv("DOCAI_LLM_PROVIDER", "").strip().lower()
-    if p:
+    if p and p != "auto":
         return p
     if os.getenv("DOCAI_AOAI_KEY"):
         return "azure"
@@ -51,14 +63,16 @@ def get_llm_provider() -> LlmProvider | None:
         version = os.getenv("DOCAI_AOAI_API_VERSION", "2024-08-01-preview")
         if not key or not endpoint:
             return None
+        resource = _normalize_aoai_endpoint(endpoint)
         # Azure OpenAI is reached through the deployment path + api-version query.
-        base_url = f"{endpoint.rstrip('/')}/openai/deployments/{deployment}"
+        base_url = f"{resource}/openai/deployments/{deployment}"
         return OpenAiCompatibleProvider(
             id="azure",
             base_url=base_url,
             api_key=key,
             model=deployment,
             default_headers={"api-key": key},
+            default_query={"api-version": version},
         )
 
     if provider == "openai":

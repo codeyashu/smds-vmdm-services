@@ -9,14 +9,19 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
+from app.core.auth import require_service_bearer
 from app.core.logging import get_logger
 from app.nl_search.parse import parse_natural_language_with_llm
 from app.providers.llm.factory import get_llm_provider
 
-router = APIRouter(prefix="/v1/nl-search", tags=["nl-search"])
+router = APIRouter(
+    prefix="/v1/nl-search",
+    tags=["nl-search"],
+    dependencies=[Depends(require_service_bearer)],
+)
 log = get_logger()
 
 

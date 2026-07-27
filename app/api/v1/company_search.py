@@ -12,17 +12,22 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
 from app.company_search import adjudicate, classify_tax, expand_terms, normalize_address, normalize_name, similarity
 from app.company_search.guardrails import LLM_CANDIDATE_CAP
 from app.company_search.normalize_name import EmptyNormalizedNameError
+from app.core.auth import require_service_bearer
 from app.core.logging import get_logger
 from app.providers.llm.base import LlmProvider
 from app.providers.llm.factory import get_llm_provider
 
-router = APIRouter(prefix="/v1/company-search", tags=["company-search"])
+router = APIRouter(
+    prefix="/v1/company-search",
+    tags=["company-search"],
+    dependencies=[Depends(require_service_bearer)],
+)
 log = get_logger()
 
 _ADDRESS_RESPONSE_KEYS = {

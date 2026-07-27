@@ -12,6 +12,7 @@ dependencies = [
     "azure-ai-documentintelligence>=1.0.0",  # default OCR path
     "openai>=1.54",       # Azure OpenAI client; also drives the optional free-tier providers
     "pymupdf>=1.24",      # page-image rendering for the vision LLM; free-path text fallback
+    "sqlmodel>=0.0.22",
     "pillow>=11.0",
     "structlog>=24.4",
 ]
@@ -31,6 +32,7 @@ dev = [
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+asyncio_mode = "auto"
 
 [build-system]
 requires = ["hatchling"]

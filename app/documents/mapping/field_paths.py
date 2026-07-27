@@ -81,6 +81,17 @@ IN_NOT_APPLICABLE = frozenset(
 )
 
 
+# Doc types the extraction pipeline can map to applyable portal patches (tier 1 in /v1/doctypes).
+# Independent of admin `is_mandatory` — marking Udyam mandatory does not give it a write path.
+WRITABLE_DOC_TYPES = frozenset(
+    {
+        "IN_PAN_CARD",
+        "IN_GST_CERTIFICATE",
+        "IN_CANCELLED_CHEQUE",
+    }
+)
+
+
 def passes_field_regex(field_name: str, value: str) -> bool:
     """True when no regex is known for the field, or the value matches it."""
     pattern = IN_FIELD_REGEX.get(field_name)

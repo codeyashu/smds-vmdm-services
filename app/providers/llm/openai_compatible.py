@@ -38,6 +38,7 @@ class OpenAiCompatibleProvider:
         model: str,
         supports_vision: bool = True,
         default_headers: dict[str, str] | None = None,
+        default_query: dict[str, str] | None = None,
     ):
         self.id = id
         self.model = model
@@ -45,6 +46,7 @@ class OpenAiCompatibleProvider:
         self._base_url = base_url
         self._api_key = api_key
         self._default_headers = default_headers
+        self._default_query = default_query
 
     def _client(self):
         # Imported lazily so the module (and the pure test surface) loads without the SDK.
@@ -54,6 +56,7 @@ class OpenAiCompatibleProvider:
             base_url=self._base_url,
             api_key=self._api_key,
             default_headers=self._default_headers,
+            default_query=self._default_query,
         )
 
     async def complete_json(

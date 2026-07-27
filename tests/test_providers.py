@@ -31,8 +31,27 @@ def test_llm_provider_azure_when_configured(monkeypatch):
     monkeypatch.setenv("DOCAI_LLM_PROVIDER", "azure")
     monkeypatch.setenv("DOCAI_AOAI_KEY", "k")
     monkeypatch.setenv("DOCAI_AOAI_ENDPOINT", "https://example.openai.azure.com")
+    monkeypatch.setenv("DOCAI_AOAI_DEPLOYMENT", "gpt-4o")
+    monkeypatch.setenv("DOCAI_AOAI_API_VERSION", "2024-08-01-preview")
     provider = llm_factory.get_llm_provider()
     assert provider is not None and provider.id == "azure"
+    assert provider._base_url == "https://example.openai.azure.com/openai/deployments/gpt-4o"
+    assert provider._default_query == {"api-version": "2024-08-01-preview"}
+
+
+def test_llm_provider_azure_normalizes_full_chat_url(monkeypatch):
+    monkeypatch.setenv("DOCAI_LLM_PROVIDER", "azure")
+    monkeypatch.setenv("DOCAI_AOAI_KEY", "k")
+    monkeypatch.setenv(
+        "DOCAI_AOAI_ENDPOINT",
+        "https://example.openai.azure.com/openai/deployments/gpt-4/chat/completions?api-version=2025-01-01-preview",
+    )
+    monkeypatch.setenv("DOCAI_AOAI_DEPLOYMENT", "gpt-4")
+    monkeypatch.setenv("DOCAI_AOAI_API_VERSION", "2025-01-01-preview")
+    provider = llm_factory.get_llm_provider()
+    assert provider is not None
+    assert provider._base_url == "https://example.openai.azure.com/openai/deployments/gpt-4"
+    assert provider._default_query == {"api-version": "2025-01-01-preview"}
 
 
 def test_llm_provider_ollama_requires_explicit_opt_in(monkeypatch):

@@ -98,7 +98,7 @@ uv run pytest -q
 
 ## Config reference
 
-All settings are prefixed `DOCAI_` (pydantic-settings, `.env` supported).
+All settings are prefixed `DOCAI_` (pydantic-settings, `.env` supported). Copy `.env.example` → `.env` to start.
 
 ```
 DOCAI_OCR_PROVIDER=auto|azure_di|pymupdf|tesseract   # auto = azure_di when DI creds present

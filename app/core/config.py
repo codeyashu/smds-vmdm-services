@@ -36,7 +36,12 @@ class Settings(BaseSettings):
     max_file_bytes: int = 10 * 1024 * 1024
     max_pages: int = 20
     max_batch_files: int = 5
-    allowed_mime: tuple[str, ...] = ("application/pdf", "image/jpeg", "image/png")
+    allowed_mime: tuple[str, ...] = (
+        "application/pdf",
+        "image/jpeg",
+        "image/png",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    )
 
     # Service auth — token the portal BFF presents. When unset, auth is disabled (dev only).
     service_bearer_token: str | None = None
@@ -52,3 +57,24 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
+
+
+def bootstrap_process_env() -> None:
+    """Expose pydantic-loaded `.env` values to `os.environ` for factory helpers."""
+    import os
+
+    settings = get_settings()
+    for env_key, value in (
+        ("DOCAI_OCR_PROVIDER", settings.ocr_provider),
+        ("DOCAI_LLM_PROVIDER", settings.llm_provider),
+        ("DOCAI_DI_ENDPOINT", settings.di_endpoint),
+        ("DOCAI_DI_KEY", settings.di_key),
+        ("DOCAI_DI_MODEL", settings.di_model),
+        ("DOCAI_AOAI_ENDPOINT", settings.aoai_endpoint),
+        ("DOCAI_AOAI_KEY", settings.aoai_key),
+        ("DOCAI_AOAI_DEPLOYMENT", settings.aoai_deployment),
+        ("DOCAI_AOAI_API_VERSION", settings.aoai_api_version),
+        ("DOCAI_SERVICE_BEARER_TOKEN", settings.service_bearer_token),
+    ):
+        if value and str(value).lower() != "auto" and not os.getenv(env_key):
+            os.environ[env_key] = str(value)

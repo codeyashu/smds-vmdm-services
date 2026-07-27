@@ -14,7 +14,7 @@ from pydantic import BaseModel, field_validator
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
-from app.core.config import get_settings
+from app.core.auth import require_service_bearer
 from app.requirements.models import DocumentRequirement
 from app.requirements.store import get_engine
 
@@ -42,11 +42,7 @@ class RequirementOut(RequirementIn):
 
 
 def _require_bearer(authorization: str | None) -> None:
-    token = get_settings().service_bearer_token
-    if not token:
-        return
-    if authorization != f"Bearer {token}":
-        raise HTTPException(status_code=401, detail="Missing or invalid bearer token.")
+    require_service_bearer(authorization)
 
 
 def _reject_duplicate(session: Session, body: RequirementIn, *, exclude_id: int | None = None) -> None:

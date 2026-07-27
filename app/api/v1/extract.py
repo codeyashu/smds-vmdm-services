@@ -4,8 +4,9 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 
+from app.core.auth import require_service_bearer
 from app.core.config import get_settings
 from app.core.logging import get_logger
 from app.documents.extract.errors import ExtractionUnavailable, ExtractionUpstreamError
@@ -16,7 +17,61 @@ router = APIRouter(prefix="/v1", tags=["extract"])
 log = get_logger()
 
 
-@router.post("/extract")
+@router.post("/extract/batch", dependencies=[Depends(require_service_bearer)])
+async def extract_batch(
+    files: list[UploadFile] = File(...),
+    countryCode: str = Form(...),
+    docTypeHint: str | None = Form(default=None),
+):
+    settings = get_settings()
+    if countryCode.strip().upper() != "IN":
+        raise HTTPException(status_code=422, detail="Only countryCode=IN is supported in phase 1.")
+    if len(files) > settings.max_batch_files:
+        raise HTTPException(
+            status_code=413,
+            detail=f"At most {settings.max_batch_files} files per batch.",
+        )
+
+    results: list[dict] = []
+    for upload in files:
+        content = await upload.read()
+        try:
+            validated = validate_upload(content, settings)
+        except UploadRejected as exc:
+            results.append(
+                {
+                    "documentId": "",
+                    "docType": "UNKNOWN",
+                    "docTypeConfidence": 0.0,
+                    "patches": [],
+                    "crossChecks": [],
+                    "warnings": [exc.message],
+                    "unmapped": [],
+                }
+            )
+            continue
+
+        try:
+            result = await run_extraction(validated.content, validated.mime, countryCode)
+            results.append(result.as_dict())
+        except (ExtractionUnavailable, ExtractionUpstreamError) as exc:
+            results.append(
+                {
+                    "documentId": "",
+                    "docType": "UNKNOWN",
+                    "docTypeConfidence": 0.0,
+                    "patches": [],
+                    "crossChecks": [],
+                    "warnings": [str(exc)],
+                    "unmapped": [],
+                }
+            )
+
+    log.info("extract.batch", file_count=len(files), result_count=len(results), doc_type_hint=docTypeHint)
+    return {"results": results}
+
+
+@router.post("/extract", dependencies=[Depends(require_service_bearer)])
 async def extract(
     file: UploadFile = File(...),
     countryCode: str = Form(...),

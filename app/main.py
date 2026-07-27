@@ -2,18 +2,24 @@ from __future__ import annotations
 
 from fastapi import FastAPI
 
-from app.api.v1 import doctypes, extract, requirements
-from app.core.config import get_settings
+from app.api.v1 import company_search, doctypes, extract, nl_search, onboard, requirements
+from app.core.config import bootstrap_process_env, get_settings
 from app.core.logging import configure_logging
+from app.mcp.server import router as mcp_router
 from app.providers.llm.factory import get_llm_provider
 from app.providers.ocr.factory import get_ocr_provider
 
 configure_logging()
+bootstrap_process_env()
 
-app = FastAPI(title="smds-vmdm-ai-services", version="0.1.0")
+app = FastAPI(title="smds-vmdm-services", version="0.1.0")
 app.include_router(extract.router)
 app.include_router(doctypes.router)
 app.include_router(requirements.router)
+app.include_router(company_search.router)
+app.include_router(nl_search.router)
+app.include_router(onboard.router)
+app.include_router(mcp_router)
 
 
 @app.get("/health")

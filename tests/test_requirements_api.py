@@ -16,11 +16,7 @@ def test_list_requirements_returns_seeded_in_defaults():
     assert "IN_PAN_CARD" in doc_types
 
 
-def test_create_requirement_without_token_when_none_configured(monkeypatch):
-    from app.core.config import get_settings
-
-    monkeypatch.delenv("DOCAI_SERVICE_BEARER_TOKEN", raising=False)
-    get_settings.cache_clear()
+def test_create_requirement_without_token_when_none_configured():
     body = {
         "country_code": "IN",
         "doc_type": "IN_TEST_DOC",
@@ -31,7 +27,6 @@ def test_create_requirement_without_token_when_none_configured(monkeypatch):
     r = client.post("/v1/doc-requirements", json=body)
     assert r.status_code == 201
     assert r.json()["doc_type"] == "IN_TEST_DOC"
-    get_settings.cache_clear()
 
 
 def test_create_requirement_requires_token_when_configured(monkeypatch):

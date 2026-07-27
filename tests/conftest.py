@@ -4,6 +4,46 @@ from __future__ import annotations
 
 import pytest
 
+_PROVIDER_ENV_KEYS = (
+    "DOCAI_LLM_PROVIDER",
+    "DOCAI_OCR_PROVIDER",
+    "DOCAI_AOAI_KEY",
+    "DOCAI_AOAI_ENDPOINT",
+    "DOCAI_AOAI_DEPLOYMENT",
+    "DOCAI_AOAI_API_VERSION",
+    "DOCAI_DI_ENDPOINT",
+    "DOCAI_DI_KEY",
+    "DOCAI_DI_MODEL",
+    "OPENAI_API_KEY",
+    "OPENAI_BASE_URL",
+    "OPENAI_MODEL",
+    "GEMINI_API_KEY",
+    "GEMINI_BASE_URL",
+    "GEMINI_MODEL",
+    "GROQ_API_KEY",
+    "GROQ_BASE_URL",
+    "GROQ_MODEL",
+    "OLLAMA_BASE_URL",
+    "OLLAMA_MODEL",
+    "OLLAMA_API_KEY",
+    "DOCAI_SERVICE_BEARER_TOKEN",
+)
+
+
+@pytest.fixture(autouse=True)
+def zero_provider_config(monkeypatch):
+    """Isolate tests from repo `.env` so unconfigured paths return 503 and auth stays open."""
+    for key in _PROVIDER_ENV_KEYS:
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("DOCAI_LLM_PROVIDER", "none")
+    monkeypatch.setenv("DOCAI_OCR_PROVIDER", "azure_di")
+    monkeypatch.setenv("DOCAI_SERVICE_BEARER_TOKEN", "")
+    from app.core.config import get_settings
+
+    get_settings.cache_clear()
+    yield
+    get_settings.cache_clear()
+
 
 @pytest.fixture(autouse=True)
 def isolated_docai_db(tmp_path, monkeypatch):

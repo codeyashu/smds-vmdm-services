@@ -5,9 +5,27 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
+from app.nl_search.context import AlternativeCodeTypeItem, NlSearchParseContext
 from app.nl_search.models import NlSearchParams
 from app.nl_search.parse import parse_natural_language_with_llm
 from tests.fakes import FakeLlmProvider
+
+
+@pytest.mark.asyncio
+async def test_parse_includes_vmdm_context_in_system_prompt():
+    provider = FakeLlmProvider(
+        responses=[{"intent": "attribute_search", "tradingName": "Acme Ltd", "summary": "search for Acme"}]
+    )
+    context = NlSearchParseContext(
+        alternativeCodeTypes=[
+            AlternativeCodeTypeItem(code="SMDS_VNDR_CD", name="SMDS Vendor Code"),
+        ],
+        vendorStatuses=["ACTIVE"],
+    )
+    await parse_natural_language_with_llm(provider, "find Acme Ltd", context)
+    system_message = provider.calls[0][0].text
+    assert "SMDS_VNDR_CD" in system_message
+    assert "SMDS Vendor Code" in system_message
 
 
 @pytest.mark.asyncio

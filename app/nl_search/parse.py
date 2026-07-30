@@ -14,6 +14,7 @@ from typing import Any
 
 from pydantic import ValidationError
 
+from app.nl_search.context import NlSearchParseContext, build_system_prompt
 from app.nl_search.models import NlParseResult, NlSearchParams
 from app.providers.llm.base import LlmMessage, LlmProvider
 
@@ -45,34 +46,6 @@ COUNTRY_NAME_TO_ISO2: dict[str, str] = {
 
 _ISO2_RE = re.compile(r"^[A-Za-z]{2}$")
 
-SYSTEM_PROMPT = """You convert vendor master data search requests into JSON for the Maersk Vendor Search API.
-
-Return ONLY valid JSON with this shape:
-{
-  "intent": "code_lookup" | "attribute_search",
-  "code": "optional vendor/alternative code like IN000067593",
-  "codeType": "optional",
-  "tradingName": "optional min 3 chars",
-  "country": "optional ISO2 like IN",
-  "taxId": "optional",
-  "cityName": "optional",
-  "streetName": "optional",
-  "postalCode": "optional",
-  "vendorStatus": "optional ACTIVE|PENDING|SUSPENDED etc",
-  "hasDraft": "optional boolean — true to filter vendors with unpublished draft",
-  "inWorkflow": "optional boolean — true when user wants vendors in approval workflow",
-  "accountType": "optional",
-  "tradingPartnerCode": "optional",
-  "summary": "short human-readable interpretation"
-}
-
-Rules:
-- Use code_lookup only when user clearly wants a specific vendor code.
-- country must be ISO 3166-1 alpha-2 when present.
-- Prefer attribute_search for name/location/tax queries.
-- If unsure, set tradingName from the main entity name in the query.
-- summary is required."""
-
 
 def _normalize_country(value: Any) -> str | None:
     if not isinstance(value, str):
@@ -103,9 +76,14 @@ def _normalize_llm_raw(raw: dict[str, Any]) -> dict[str, Any]:
     return normalized
 
 
-async def parse_natural_language_with_llm(provider: LlmProvider, query: str) -> NlParseResult:
+async def parse_natural_language_with_llm(
+    provider: LlmProvider,
+    query: str,
+    context: NlSearchParseContext | None = None,
+) -> NlParseResult:
+    system_prompt = build_system_prompt(context)
     messages = [
-        LlmMessage(role="system", text=SYSTEM_PROMPT),
+        LlmMessage(role="system", text=system_prompt),
         LlmMessage(role="user", text=query),
     ]
 

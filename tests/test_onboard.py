@@ -11,6 +11,43 @@ from app.mcp.tools import list_tools
 
 
 @pytest.mark.asyncio
+async def test_onboard_ready_reports_v2():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        res = await client.get("/v1/onboard/ready")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["status"] == "ok"
+    assert body["orchestratorVersion"] == 2
+
+
+@pytest.mark.asyncio
+async def test_run_session_accepts_files_and_form_state():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        created = await client.post("/v1/onboard/sessions", json={"countryCode": "IN"})
+        session_id = created.json()["sessionId"]
+        res = await client.post(
+            f"/v1/onboard/sessions/{session_id}/run",
+            json={
+                "countryCode": "IN",
+                "formState": {"tradingName": "Acme"},
+                "docAvailability": "full",
+                "files": [
+                    {
+                        "name": "gst.png",
+                        "type": "image/png",
+                        "contentBase64": "aGVsbG8=",
+                    }
+                ],
+            },
+        )
+    assert res.status_code == 200
+    assert "text/event-stream" in res.headers.get("content-type", "")
+    assert "RUN_STARTED" in res.text
+
+
+@pytest.mark.asyncio
 async def test_create_onboard_session():
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:

@@ -14,6 +14,7 @@ from pydantic import BaseModel
 
 from app.core.auth import require_service_bearer
 from app.core.logging import get_logger
+from app.nl_search.context import NlSearchParseContext
 from app.nl_search.parse import parse_natural_language_with_llm
 from app.providers.llm.factory import get_llm_provider
 
@@ -27,6 +28,7 @@ log = get_logger()
 
 class NlSearchParseRequest(BaseModel):
     query: str
+    context: NlSearchParseContext | None = None
 
 
 @router.post("/parse")
@@ -39,7 +41,7 @@ async def parse_route(body: NlSearchParseRequest) -> dict[str, Any]:
         )
 
     try:
-        result = await parse_natural_language_with_llm(provider, body.query)
+        result = await parse_natural_language_with_llm(provider, body.query, body.context)
     except Exception as exc:
         log.warning("nl_search.parse.failed", error=str(exc))
         raise HTTPException(status_code=502, detail="Failed to parse natural language query.") from exc

@@ -39,4 +39,16 @@ def test_envelope_doc_type_is_required():
 
 def test_envelope_json_schema_exposes_all_blocks():
     schema = ExtractionEnvelope.model_json_schema()
-    assert schema["properties"].keys() >= {"doc_type", "doc_type_confidence", "pan", "gst", "cheque", "udyam", "coi"}
+    assert schema["properties"].keys() >= {
+        "doc_type",
+        "doc_type_confidence",
+        "pan",
+        "gst",
+        "cheque",
+        "udyam",
+        "coi",
+        "address_proof",
+        "iec",
+        "partnership",
+        "mto",
+    }

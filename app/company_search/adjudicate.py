@@ -69,7 +69,7 @@ async def adjudicate_with_llm(
         LlmMessage(role="system", text=SYSTEM_PROMPT),
         LlmMessage(role="user", text=json.dumps(payload)),
     ]
-    result = await provider.complete_json(messages)
+    result = await provider.complete_json(messages, trace_name="company_search.adjudicate")
 
     allowed_ids = {entry["id"] for entry in candidates}
     verdicts: list[dict[str, Any]] = []

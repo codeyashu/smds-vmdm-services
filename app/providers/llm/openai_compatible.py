@@ -65,23 +65,45 @@ class OpenAiCompatibleProvider:
         *,
         schema: dict[str, Any] | None = None,
         timeout_s: float = 30.0,
+        trace_name: str | None = None,
     ) -> dict[str, Any]:
-        client = self._client()
-        kwargs: dict[str, Any] = {
-            "model": self.model,
-            "messages": _to_openai_messages(messages),
-            "temperature": 0,
-            "timeout": timeout_s,
-        }
-        # Prefer strict JSON-schema when the endpoint supports it; fall back to json_object.
-        if schema is not None:
-            kwargs["response_format"] = {
-                "type": "json_schema",
-                "json_schema": {"name": "extraction", "schema": schema, "strict": True},
-            }
-        else:
-            kwargs["response_format"] = {"type": "json_object"}
+        from app.observability.langfuse_trace import trace_generation, update_generation_usage
 
-        resp = await client.chat.completions.create(**kwargs)
-        content = resp.choices[0].message.content or "{}"
-        return json.loads(content)
+        trace_label = trace_name or "llm.complete_json"
+        with trace_generation(
+            trace_label,
+            model=self.model,
+            input=[{"role": m.role, "text": m.text[:500]} for m in messages],
+            metadata={"provider": self.id},
+        ) as generation:
+            client = self._client()
+            kwargs: dict[str, Any] = {
+                "model": self.model,
+                "messages": _to_openai_messages(messages),
+                "temperature": 0,
+                "timeout": timeout_s,
+            }
+            # Prefer strict JSON-schema when the endpoint supports it; fall back to json_object.
+            if schema is not None:
+                kwargs["response_format"] = {
+                    "type": "json_schema",
+                    "json_schema": {"name": "extraction", "schema": schema, "strict": True},
+                }
+            else:
+                kwargs["response_format"] = {"type": "json_object"}
+
+            resp = await client.chat.completions.create(**kwargs)
+            content = resp.choices[0].message.content or "{}"
+            parsed = json.loads(content)
+
+            usage = getattr(resp, "usage", None)
+            update_generation_usage(
+                generation,
+                input_tokens=getattr(usage, "prompt_tokens", None) if usage else None,
+                output_tokens=getattr(usage, "completion_tokens", None) if usage else None,
+                total_tokens=getattr(usage, "total_tokens", None) if usage else None,
+                output=parsed,
+                model=self.model,
+            )
+
+            return parsed

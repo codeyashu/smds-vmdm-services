@@ -1,0 +1,86 @@
+{
+  "countryCode": "AE",
+  "updatedAt": "1970-01-01T00:00:00.000Z",
+  "multiSourceFields": {
+    "tradingName": [
+      "AE_TRADE_LICENSE"
+    ],
+    "legalName": [
+      "AE_TRADE_LICENSE",
+      "AE_VAT_CERTIFICATE"
+    ],
+    "postalAddresses.0.cityName": [
+      "AE_TRADE_LICENSE"
+    ]
+  },
+  "documents": [
+    {
+      "docType": "AE_TRADE_LICENSE",
+      "writable": true,
+      "attributes": [
+        {
+          "label": "Trade licence number",
+          "formPath": "_unmapped.tradeLicenseNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": false,
+          "id": "AE_TRADE_LICENSE___unmapped_tradeLicenseNumber"
+        },
+        {
+          "label": "Legal name",
+          "formPath": "legalName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "AE_TRADE_LICENSE__legalName"
+        },
+        {
+          "label": "Trading name",
+          "formPath": "tradingName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "AE_TRADE_LICENSE__tradingName"
+        },
+        {
+          "label": "Street",
+          "formPath": "postalAddresses.0.streetName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "AE_TRADE_LICENSE__postalAddresses_0_streetName"
+        },
+        {
+          "label": "City",
+          "formPath": "postalAddresses.0.cityName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "AE_TRADE_LICENSE__postalAddresses_0_cityName"
+        }
+      ]
+    },
+    {
+      "docType": "AE_VAT_CERTIFICATE",
+      "writable": true,
+      "attributes": [
+        {
+          "label": "TRN",
+          "formPath": "taxInformation.taxIdentificationNumbers.0.taxIdentificationNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "AE_VAT_CERTIFICATE__taxInformation_taxIdentificationNumbers_0_taxIdentificationNumber"
+        },
+        {
+          "label": "Legal name",
+          "formPath": "legalName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "AE_VAT_CERTIFICATE__legalName"
+        }
+      ]
+    }
+  ]
+}

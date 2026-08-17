@@ -1,0 +1,59 @@
+{
+  "countryCode": "GB",
+  "version": 1,
+  "bindings": [
+    {
+      "logicalFieldId": "company_number",
+      "label": "Company number",
+      "bind": { "kind": "unmapped", "key": "companyNumber" },
+      "validator": "gb_crn",
+      "singleton": true
+    },
+    {
+      "logicalFieldId": "vat_number",
+      "label": "VAT number",
+      "bind": { "kind": "taxSlot", "taxTypeCode": "TAXNO1" },
+      "validator": "gb_vat",
+      "singleton": true
+    },
+    {
+      "logicalFieldId": "legal_name",
+      "label": "Legal name",
+      "bind": { "kind": "scalar", "formPath": "legalName" }
+    },
+    {
+      "logicalFieldId": "bill_to_street",
+      "label": "Street",
+      "bind": { "kind": "address", "role": "primary", "field": "streetName" }
+    },
+    {
+      "logicalFieldId": "bill_to_city",
+      "label": "City",
+      "bind": { "kind": "address", "role": "primary", "field": "cityName" }
+    },
+    {
+      "logicalFieldId": "bill_to_postal_code",
+      "label": "Postal code",
+      "bind": { "kind": "address", "role": "primary", "field": "postalCode" }
+    }
+  ],
+  "documents": [
+    {
+      "docType": "GB_COMPANIES_HOUSE_CERTIFICATE",
+      "writable": true,
+      "addressRoles": ["registered_office"],
+      "attributes": ["company_number", "legal_name", "bill_to_street", "bill_to_city", "bill_to_postal_code"]
+    },
+    {
+      "docType": "GB_VAT_CERTIFICATE",
+      "writable": true,
+      "attributes": ["vat_number", "legal_name"]
+    }
+  ],
+  "multiSourceFields": {
+    "legal_name": ["GB_COMPANIES_HOUSE_CERTIFICATE", "GB_VAT_CERTIFICATE"],
+    "bill_to_postal_code": ["GB_COMPANIES_HOUSE_CERTIFICATE"]
+  },
+  "nameFuzzyThreshold": 0.88,
+  "addressFuzzyThreshold": 0.8
+}

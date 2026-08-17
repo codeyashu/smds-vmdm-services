@@ -1,5 +1,6 @@
 """
-LangGraph-style onboard orchestration graph (deterministic v2).
+Onboard enrichment stage pipeline (deterministic v2).
+Orchestration lives in services — portal is presentation + BFF proxy.
 """
 
 from __future__ import annotations
@@ -72,6 +73,7 @@ async def run_onboard_graph(session_id: str, context: dict[str, Any]) -> AsyncIt
         "files": context.get("files") or [],
         "docAvailability": context.get("docAvailability"),
         "patchGroups": context.get("patchGroups") or [],
+        "resolvedStages": context.get("resolvedStages") or {},
         "stepsCompleted": [],
         "extractionFailures": [],
     }
@@ -112,13 +114,45 @@ async def run_onboard_graph(session_id: str, context: dict[str, Any]) -> AsyncIt
             ]
         },
     )
-    yield ag_ui_event("CUSTOM", session_id, {"name": "enrichment_plan", "plan": plan})
-    yield ag_ui_event("ENRICHMENT_PLAN", session_id, {"plan": plan})
+    # Per-document extract results already exist in the stage context (stages.py's
+    # run_extract_stage) but were dropped before reaching the client. The extract stage still
+    # runs as one sequential batch with a single STEP_STARTED/STEP_FINISHED pair — this is not
+    # per-file streaming — but the UI can now show real per-document doc type/confidence/field
+    # count once the stage resolves, instead of nothing. Attached onto `plan` itself (not the
+    # payload) so it survives the client's enrichmentPlanFromEvent unwrap, which reads only
+    # event.payload.plan.
+    extract_summary = [
+        {
+            "documentId": r.get("documentId"),
+            "docType": r.get("docType"),
+            "docTypeConfidence": r.get("docTypeConfidence"),
+            "patchCount": len(r.get("patches") or []),
+            "warnings": r.get("warnings") or [],
+        }
+        for r in (working.get("extractResults") or [])
+        if r.get("documentId")
+    ]
+    if extract_summary:
+        plan["extractResults"] = extract_summary
+
+    plan_payload: dict[str, Any] = {"name": "enrichment_plan", "plan": plan}
+    if working.get("documentAdjudication"):
+        plan_payload["documentAdjudication"] = working["documentAdjudication"]
+    yield ag_ui_event("CUSTOM", session_id, plan_payload)
+    yield ag_ui_event("ENRICHMENT_PLAN", session_id, plan_payload)
     option_count = len(plan.get("options") or [])
     review_message = (
         f"Ready for review — {option_count} field suggestion{'s' if option_count != 1 else ''}."
         if option_count
         else "Extraction finished but no applyable fields were found — continue with manual gap-fill or upload a GST / incorporation certificate."
+    )
+    from app.onboard.agent_turn import AGENT_TURN_CUSTOM_NAME, enrichment_review_agent_turn
+
+    review_turn = enrichment_review_agent_turn(review_message, plan)
+    yield ag_ui_event(
+        "CUSTOM",
+        session_id,
+        {"name": AGENT_TURN_CUSTOM_NAME, "turn": review_turn},
     )
     yield ag_ui_event("TEXT_MESSAGE_CONTENT", session_id, {"message": review_message})
     yield ag_ui_event(

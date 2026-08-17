@@ -225,3 +225,19 @@ async def similarity_route(body: SimilarityRequest) -> dict[str, Any]:
     except Exception as exc:
         log.warning("company_search.similarity.failed", error=str(exc))
         raise HTTPException(status_code=502, detail="Similarity scoring failed.") from exc
+
+
+# --- blend-scores ------------------------------------------------------------------------
+
+
+class BlendScoresRequest(BaseModel):
+    scored: list[dict[str, Any]] = Field(default_factory=list)
+    similarity: list[dict[str, Any]] | None = None
+
+
+@router.post("/blend-scores")
+async def blend_scores_route(body: BlendScoresRequest) -> dict[str, Any]:
+    from app.company_search.blend_scores import blend_semantic_scores
+
+    blended = blend_semantic_scores(body.scored, body.similarity)
+    return {"scored": blended}

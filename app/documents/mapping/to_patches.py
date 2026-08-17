@@ -14,10 +14,15 @@ from dataclasses import asdict, dataclass, field
 from typing import Any
 
 from app.documents.extract.schemas.india import (
+    AddressProofExtraction,
     ChequeExtraction,
+    CoiExtraction,
     ExtractedAddress,
     GstExtraction,
+    IecExtraction,
+    MtoExtraction,
     PanExtraction,
+    PartnershipExtraction,
 )
 from app.documents.mapping.field_paths import (
     IN_NOT_APPLICABLE,
@@ -53,11 +58,17 @@ class Patch:
     pre_selected: bool = False
     regex_ok: bool = True
     evidence: Evidence | None = None
+    native_value: str | None = None
+    romanized_value: str | None = None
+    field_policy: str | None = None
+    script: str | None = None
+    locale_charset_code: str | None = None
+    locale_charset_name: str | None = None
 
     def as_dict(self) -> dict[str, Any]:
         d = asdict(self)
         if self.evidence is None:
-            d.pop("evidence")
+            d.pop("evidence", None)
         return {k: v for k, v in d.items() if v is not None or k in ("value", "pre_selected")}
 
 
@@ -99,6 +110,29 @@ def _scalar_patch(
     )
 
 
+def _unmapped_patch(key: str, label: str, value: str, confidence: float) -> Patch:
+    return Patch(
+        path=f"_unmapped.{key}",
+        value=value.strip(),
+        label=label,
+        confidence=confidence,
+        pre_selected=False,
+        regex_ok=True,
+    )
+
+
+def _weak_name_patch(
+    path: str,
+    value: str,
+    label: str,
+    confidence: float,
+    evidence: Evidence | None = None,
+) -> Patch | None:
+    p = _scalar_patch(path, "tradingName" if path == "tradingName" else None, value, label, confidence, evidence)
+    if p:
+        p.pre_selected = False
+    return p
+
 def _address_patches(addr: ExtractedAddress | None, confidence: float) -> list[Patch]:
     if addr is None:
         return []
@@ -128,6 +162,89 @@ def _address_patches(addr: ExtractedAddress | None, confidence: float) -> list[P
                 regex_ok=True,
             )
         )
+    return out
+
+
+def patches_from_coi(coi: CoiExtraction, evidence: Evidence | None = None) -> list[Patch]:
+    out: list[Patch] = []
+    if coi.cin:
+        out.append(_unmapped_patch("cin", "CIN", coi.cin, coi.confidence))
+    if coi.company_name:
+        trading = _weak_name_patch("tradingName", coi.company_name, "Trading name", coi.confidence, evidence)
+        if trading:
+            out.append(trading)
+        legal = _weak_name_patch("legalName", coi.company_name, "Legal name", coi.confidence, evidence)
+        if legal:
+            out.append(legal)
+    return out
+
+
+def patches_from_address_proof(
+    address_proof: AddressProofExtraction, evidence: Evidence | None = None
+) -> list[Patch]:
+    out: list[Patch] = []
+    if address_proof.holder_name:
+        trading = _weak_name_patch(
+            "tradingName", address_proof.holder_name, "Trading name", address_proof.confidence, evidence
+        )
+        if trading:
+            out.append(trading)
+    out.extend(_address_patches(address_proof.address, address_proof.confidence))
+    return out
+
+
+def patches_from_iec(iec: IecExtraction, evidence: Evidence | None = None) -> list[Patch]:
+    out: list[Patch] = []
+    if iec.iec_code:
+        out.append(_unmapped_patch("iecCode", "IEC", normalize_identifier(iec.iec_code), iec.confidence))
+    if iec.holder_name:
+        trading = _weak_name_patch("tradingName", iec.holder_name, "Trading name", iec.confidence, evidence)
+        if trading:
+            out.append(trading)
+    return out
+
+
+def patches_from_partnership(
+    partnership: PartnershipExtraction, evidence: Evidence | None = None
+) -> list[Patch]:
+    out: list[Patch] = []
+    if partnership.registration_number:
+        out.append(
+            _unmapped_patch(
+                "partnershipRegistrationNo",
+                "Partnership registration number",
+                partnership.registration_number,
+                partnership.confidence,
+            )
+        )
+    if partnership.firm_name:
+        trading = _weak_name_patch(
+            "tradingName", partnership.firm_name, "Trading name", partnership.confidence, evidence
+        )
+        if trading:
+            out.append(trading)
+        legal = _weak_name_patch("legalName", partnership.firm_name, "Legal name", partnership.confidence, evidence)
+        if legal:
+            out.append(legal)
+    out.extend(_address_patches(partnership.registered_address, partnership.confidence))
+    return out
+
+
+def patches_from_mto(mto: MtoExtraction, evidence: Evidence | None = None) -> list[Patch]:
+    out: list[Patch] = []
+    if mto.licence_number:
+        out.append(
+            _unmapped_patch(
+                "mtoLicenceNo",
+                "MTO/IATA/CHA licence number",
+                mto.licence_number.strip(),
+                mto.confidence,
+            )
+        )
+    if mto.holder_name:
+        trading = _weak_name_patch("tradingName", mto.holder_name, "Trading name", mto.confidence, evidence)
+        if trading:
+            out.append(trading)
     return out
 
 

@@ -1,0 +1,58 @@
+{
+  "countryCode": "AE",
+  "version": 1,
+  "bindings": [
+    {
+      "logicalFieldId": "trade_license_number",
+      "label": "Trade licence number",
+      "bind": { "kind": "unmapped", "key": "tradeLicenseNumber" }
+    },
+    {
+      "logicalFieldId": "trn",
+      "label": "TRN",
+      "bind": { "kind": "taxSlot", "taxTypeCode": "TAXNO1" },
+      "validator": "trn",
+      "singleton": true
+    },
+    {
+      "logicalFieldId": "legal_name",
+      "label": "Legal name",
+      "bind": { "kind": "scalar", "formPath": "legalName" }
+    },
+    {
+      "logicalFieldId": "trading_name",
+      "label": "Trading name",
+      "bind": { "kind": "scalar", "formPath": "tradingName" }
+    },
+    {
+      "logicalFieldId": "bill_to_street",
+      "label": "Street",
+      "bind": { "kind": "address", "role": "primary", "field": "streetName" }
+    },
+    {
+      "logicalFieldId": "bill_to_city",
+      "label": "City",
+      "bind": { "kind": "address", "role": "primary", "field": "cityName" }
+    }
+  ],
+  "documents": [
+    {
+      "docType": "AE_TRADE_LICENSE",
+      "writable": true,
+      "addressRoles": ["registered_office"],
+      "attributes": ["trade_license_number", "legal_name", "trading_name", "bill_to_street", "bill_to_city"]
+    },
+    {
+      "docType": "AE_VAT_CERTIFICATE",
+      "writable": true,
+      "attributes": ["trn", "legal_name"]
+    }
+  ],
+  "multiSourceFields": {
+    "trading_name": ["AE_TRADE_LICENSE"],
+    "legal_name": ["AE_TRADE_LICENSE", "AE_VAT_CERTIFICATE"],
+    "bill_to_city": ["AE_TRADE_LICENSE"]
+  },
+  "nameFuzzyThreshold": 0.82,
+  "addressFuzzyThreshold": 0.75
+}

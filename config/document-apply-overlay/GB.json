@@ -1,0 +1,83 @@
+{
+  "countryCode": "GB",
+  "updatedAt": "1970-01-01T00:00:00.000Z",
+  "multiSourceFields": {
+    "legalName": [
+      "GB_COMPANIES_HOUSE_CERTIFICATE",
+      "GB_VAT_CERTIFICATE"
+    ],
+    "postalAddresses.0.postalCode": [
+      "GB_COMPANIES_HOUSE_CERTIFICATE"
+    ]
+  },
+  "documents": [
+    {
+      "docType": "GB_COMPANIES_HOUSE_CERTIFICATE",
+      "writable": true,
+      "attributes": [
+        {
+          "label": "Company number",
+          "formPath": "_unmapped.companyNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": false,
+          "id": "GB_COMPANIES_HOUSE_CERTIFICATE___unmapped_companyNumber"
+        },
+        {
+          "label": "Legal name",
+          "formPath": "legalName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "GB_COMPANIES_HOUSE_CERTIFICATE__legalName"
+        },
+        {
+          "label": "Street",
+          "formPath": "postalAddresses.0.streetName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "GB_COMPANIES_HOUSE_CERTIFICATE__postalAddresses_0_streetName"
+        },
+        {
+          "label": "City",
+          "formPath": "postalAddresses.0.cityName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "GB_COMPANIES_HOUSE_CERTIFICATE__postalAddresses_0_cityName"
+        },
+        {
+          "label": "Postal code",
+          "formPath": "postalAddresses.0.postalCode",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "GB_COMPANIES_HOUSE_CERTIFICATE__postalAddresses_0_postalCode"
+        }
+      ]
+    },
+    {
+      "docType": "GB_VAT_CERTIFICATE",
+      "writable": true,
+      "attributes": [
+        {
+          "label": "VAT number",
+          "formPath": "taxInformation.taxIdentificationNumbers.0.taxIdentificationNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "GB_VAT_CERTIFICATE__taxInformation_taxIdentificationNumbers_0_taxIdentificationNumber"
+        },
+        {
+          "label": "Legal name",
+          "formPath": "legalName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "GB_VAT_CERTIFICATE__legalName"
+        }
+      ]
+    }
+  ]
+}

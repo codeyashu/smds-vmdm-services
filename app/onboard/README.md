@@ -1,26 +1,27 @@
-# Onboard orchestrator (services)
+# Onboard orchestrator (services brain)
 
-LangGraph-style enrichment graph in `app/onboard/graph.py` (deterministic v2).
+Deterministic enrichment stage pipeline in `app/onboard/graph.py`.
 
-## Tool → stage mapping (MCP gateway)
+## Stages
 
-| Graph stage | MCP read tool | Portal BFF backing |
-|---|---|---|
-| `extract` | `map_extraction_results` (after in-process OCR) | `POST /api/onboard/internal/map-extraction` |
-| `address_enrich` | `enrich_address` | `POST /api/addresses/enrich` |
-| `registry` | `search_company_registry` | `GET /api/companies/search` |
-| `duplicate_precheck` | `search_duplicates` | `POST /api/vendors/duplicates` |
-| `build_plan` | `propose_vendor_patch` | `POST /api/onboard/internal/build-plan` |
+| Stage | Implementation |
+|---|---|
+| `extract` | In-process `run_extraction` + `extraction_mapping` |
+| `address_enrich` | Portal BFF `POST /api/addresses/enrich` (MDM proxy transition) |
+| `registry` | Portal BFF `GET /api/companies/search` |
+| `duplicate_precheck` | Portal BFF `POST /api/vendors/duplicates` |
+| `build_plan` | In-process `enrichment_merge.merge_enrichment_plan` |
 
-Write tools (`apply_vendor_patch`, `create_prospect`, etc.) are **not** invoked by the graph — HITL writes stay in the portal.
+Chat planner: `app/onboard/chat_planner.py` (+ optional Pydantic AI via `DOCAI_ONBOARD_CHAT_LLM=true`).
 
 ## Environment
 
 | Variable | Purpose |
 |---|---|
-| `VMDM_PORTAL_BFF_URL` | Portal base URL for BFF tool calls (default `http://localhost:3000`) |
-| `ONBOARD_INTERNAL_SECRET` | Must match portal `ONBOARD_INTERNAL_SECRET` for internal routes |
+| `VMDM_PORTAL_BFF_URL` | Portal base for enrich/registry/duplicate BFF calls |
+| `LANGFUSE_PUBLIC_KEY` / `LANGFUSE_SECRET_KEY` | Optional LLM tracing |
+| `DOCAI_ONBOARD_CHAT_LLM` | Enable Pydantic AI chat planner |
 
 ## Readiness
 
-`GET /v1/onboard/ready` returns `{ "status": "ok", "orchestratorVersion": 2 }` when the real graph is active.
+`GET /v1/onboard/ready` returns `{ "status": "ok", "orchestratorVersion": 2 }`.

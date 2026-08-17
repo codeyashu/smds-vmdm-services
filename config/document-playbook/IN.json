@@ -1,0 +1,189 @@
+{
+  "countryCode": "IN",
+  "version": 2,
+  "bindings": [
+    {
+      "logicalFieldId": "pan",
+      "label": "TIN/PAN",
+      "bind": { "kind": "taxSlot", "taxTypeCode": "TAXNO3" },
+      "validator": "pan",
+      "singleton": true
+    },
+    {
+      "logicalFieldId": "gstin",
+      "label": "GSTIN",
+      "bind": { "kind": "taxSlot", "taxTypeCode": "TAXNO4" },
+      "validator": "gstin",
+      "singleton": true
+    },
+    {
+      "logicalFieldId": "trading_name",
+      "label": "Trading name",
+      "bind": { "kind": "scalar", "formPath": "tradingName" }
+    },
+    {
+      "logicalFieldId": "legal_name",
+      "label": "Legal name",
+      "bind": { "kind": "scalar", "formPath": "legalName" }
+    },
+    {
+      "logicalFieldId": "is_natural_person",
+      "label": "Is natural person",
+      "bind": { "kind": "scalar", "formPath": "taxInformation.isNaturalPerson" }
+    },
+    {
+      "logicalFieldId": "bill_to_region",
+      "label": "Region (state)",
+      "bind": { "kind": "address", "role": "primary", "field": "regionCode" }
+    },
+    {
+      "logicalFieldId": "bill_to_city",
+      "label": "City",
+      "bind": { "kind": "address", "role": "primary", "field": "cityName" },
+      "needsResolution": "cityCode"
+    },
+    {
+      "logicalFieldId": "bill_to_postal_code",
+      "label": "Postal code",
+      "bind": { "kind": "address", "role": "primary", "field": "postalCode" }
+    },
+    {
+      "logicalFieldId": "bill_to_street",
+      "label": "Street",
+      "bind": { "kind": "address", "role": "primary", "field": "streetName" }
+    },
+    {
+      "logicalFieldId": "bank_account_number",
+      "label": "Bank account number",
+      "bind": { "kind": "bank", "index": 0, "field": "bankAccountNumber" }
+    },
+    {
+      "logicalFieldId": "bank_ifsc",
+      "label": "IFSC",
+      "bind": { "kind": "bank", "index": 0, "field": "ifsc" },
+      "validator": "ifsc",
+      "needsResolution": "bankingInstitutionCode"
+    },
+    {
+      "logicalFieldId": "bank_name",
+      "label": "Bank name",
+      "bind": { "kind": "bank", "index": 0, "field": "bankName" }
+    },
+    {
+      "logicalFieldId": "iban",
+      "label": "IBAN",
+      "bind": { "kind": "bank", "index": 0, "field": "ibanNumber" },
+      "validator": "iban"
+    },
+    {
+      "logicalFieldId": "cin",
+      "label": "CIN",
+      "bind": { "kind": "unmapped", "key": "cin" }
+    },
+    {
+      "logicalFieldId": "udyam_number",
+      "label": "Udyam number",
+      "bind": { "kind": "unmapped", "key": "udyamNumber" }
+    },
+    {
+      "logicalFieldId": "iec_code",
+      "label": "IEC",
+      "bind": { "kind": "unmapped", "key": "iecCode" }
+    },
+    {
+      "logicalFieldId": "mto_licence_no",
+      "label": "MTO/IATA/CHA licence number",
+      "bind": { "kind": "unmapped", "key": "mtoLicenceNo" }
+    },
+    {
+      "logicalFieldId": "partnership_registration_no",
+      "label": "Partnership registration number",
+      "bind": { "kind": "unmapped", "key": "partnershipRegistrationNo" }
+    }
+  ],
+  "documents": [
+    {
+      "docType": "IN_PAN_CARD",
+      "writable": true,
+      "attributes": ["pan", "is_natural_person", "trading_name"]
+    },
+    {
+      "docType": "IN_GST_CERTIFICATE",
+      "writable": true,
+      "addressRoles": ["principal_pob", "additional_pob"],
+      "attributes": [
+        "gstin",
+        "trading_name",
+        "legal_name",
+        "bill_to_region",
+        "bill_to_city",
+        "bill_to_postal_code",
+        "bill_to_street"
+      ]
+    },
+    {
+      "docType": "IN_CANCELLED_CHEQUE",
+      "writable": true,
+      "attributes": ["bank_account_number", "bank_ifsc", "bank_name"]
+    },
+    {
+      "docType": "IN_CERTIFICATE_OF_INCORPORATION",
+      "writable": false,
+      "addressRoles": ["registered_office"],
+      "attributes": ["cin", "trading_name", "legal_name"]
+    },
+    {
+      "docType": "IN_UDYAM_CERTIFICATE",
+      "writable": false,
+      "addressRoles": ["plant"],
+      "attributes": ["udyam_number"]
+    },
+    {
+      "docType": "IN_ADDRESS_PROOF",
+      "writable": true,
+      "addressRoles": ["operational"],
+      "attributes": [
+        "trading_name",
+        "bill_to_region",
+        "bill_to_city",
+        "bill_to_postal_code",
+        "bill_to_street"
+      ]
+    },
+    {
+      "docType": "IN_IEC_CERTIFICATE",
+      "writable": false,
+      "attributes": ["iec_code", "trading_name"]
+    },
+    {
+      "docType": "IN_DEED_OF_PARTNERSHIP",
+      "writable": false,
+      "addressRoles": ["registered_office"],
+      "attributes": ["partnership_registration_no", "trading_name", "legal_name"]
+    },
+    {
+      "docType": "IN_MTO_IATA_CHA_CERTIFICATE",
+      "writable": false,
+      "attributes": ["mto_licence_no", "trading_name"]
+    }
+  ],
+  "multiSourceFields": {
+    "trading_name": [
+      "IN_PAN_CARD",
+      "IN_GST_CERTIFICATE",
+      "IN_CERTIFICATE_OF_INCORPORATION",
+      "IN_DEED_OF_PARTNERSHIP",
+      "IN_ADDRESS_PROOF",
+      "IN_IEC_CERTIFICATE",
+      "IN_MTO_IATA_CHA_CERTIFICATE"
+    ],
+    "legal_name": [
+      "IN_GST_CERTIFICATE",
+      "IN_CERTIFICATE_OF_INCORPORATION",
+      "IN_DEED_OF_PARTNERSHIP"
+    ],
+    "bill_to_region": ["IN_GST_CERTIFICATE", "IN_ADDRESS_PROOF"]
+  },
+  "nameFuzzyThreshold": 0.82,
+  "addressFuzzyThreshold": 0.75
+}

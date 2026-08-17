@@ -8,17 +8,38 @@ from fastapi import APIRouter, HTTPException
 from sqlmodel import Session, select
 
 from app.documents.mapping.field_paths import WRITABLE_DOC_TYPES
+from app.documents.playbook.config_store import load_country_playbook
 from app.requirements.models import DocumentRequirement
 from app.requirements.store import get_engine
 
 router = APIRouter(prefix="/v1", tags=["doctypes"])
 
 
+def _doctypes_from_playbook(country: str) -> list[dict]:
+    book = load_country_playbook(country)
+    if book is None:
+        return []
+    return [
+        {
+            "id": doc.doc_type,
+            "label": doc.doc_type.replace(f"{country}_", "").replace("_", " ").title(),
+            "tier": 1 if doc.writable else 2,
+        }
+        for doc in book.documents
+    ]
+
+
 @router.get("/doctypes")
 async def doctypes(country: str = "IN"):
     normalized = country.strip().upper()
     if normalized != "IN":
-        raise HTTPException(status_code=422, detail="Only country=IN is supported in phase 1.")
+        doc_types = _doctypes_from_playbook(normalized)
+        if not doc_types:
+            raise HTTPException(
+                status_code=422,
+                detail=f"country={normalized} is not supported. Supported: IN, CN, AE, US, GB.",
+            )
+        return {"country": normalized, "docTypes": doc_types}
     with Session(get_engine()) as session:
         rows = session.exec(
             select(DocumentRequirement)

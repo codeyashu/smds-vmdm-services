@@ -10,10 +10,12 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, Header, HTTPException
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, model_validator
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
+from app.core.auth import require_service_bearer
+from app.documents.classify.country_guard import doc_type_matches_country
 from app.core.auth import require_service_bearer
 from app.requirements.models import DocumentRequirement
 from app.requirements.store import get_engine
@@ -35,6 +37,14 @@ class RequirementIn(BaseModel):
         invisible from both GET endpoints forever. Normalise on the way in instead — on the
         model, so create and update stay consistent."""
         return v.strip().upper()
+
+    @model_validator(mode="after")
+    def _doc_type_matches_country(self) -> RequirementIn:
+        if not doc_type_matches_country(self.country_code, self.doc_type):
+            raise ValueError(
+                f"doc_type must start with {self.country_code}_ for country {self.country_code}."
+            )
+        return self
 
 
 class RequirementOut(RequirementIn):

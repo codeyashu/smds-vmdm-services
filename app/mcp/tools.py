@@ -14,11 +14,14 @@ READ_TOOLS = [
     "validate_vendor_draft",
     "search_duplicates",
     "extract_documents",
+    "adjudicate_documents",
+    "get_vendor_document_extractions",
+    "reconcile_address_candidates",
+    "resolve_field_conflicts",
     "search_company_registry",
     "match_company_registry",
     "enrich_address",
     "search_bank",
-    "propose_vendor_patch",
 ]
 
 WRITE_TOOLS = [

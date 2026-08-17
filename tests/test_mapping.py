@@ -3,10 +3,15 @@
 from __future__ import annotations
 
 from app.documents.extract.schemas.india import (
+    AddressProofExtraction,
     ChequeExtraction,
+    CoiExtraction,
     ExtractedAddress,
     GstExtraction,
+    IecExtraction,
+    MtoExtraction,
     PanExtraction,
+    PartnershipExtraction,
 )
 from app.documents.mapping import to_patches as tp
 from app.documents.mapping.field_paths import IN_NOT_APPLICABLE, passes_field_regex
@@ -112,3 +117,50 @@ def test_every_gated_value_that_pre_selects_passes_its_regex():
     for p in patches:
         if p.pre_selected and p.field_name:
             assert passes_field_regex(p.field_name, str(p.value)), p.path
+
+
+def test_coi_emits_names_and_cin_patch():
+    patches = tp.patches_from_coi(
+        CoiExtraction(cin="U12345MH2020PTC123456", company_name="ACME LOGISTICS PVT LTD", confidence=0.9)
+    )
+    assert _by_path(patches, "_unmapped.cin") is not None
+    trading = _by_path(patches, "tradingName")
+    legal = _by_path(patches, "legalName")
+    assert trading is not None and trading.pre_selected is False
+    assert legal is not None and legal.pre_selected is False
+
+
+def test_address_proof_emits_address_patches():
+    patches = tp.patches_from_address_proof(
+        AddressProofExtraction(
+            holder_name="ACME LOGISTICS",
+            address=ExtractedAddress(street_name="MG Road", postal_code="411001", city_name="Pune"),
+            confidence=0.9,
+        )
+    )
+    assert _by_path(patches, "postalAddresses.0.streetName") is not None
+    assert _by_path(patches, "postalAddresses.0.postalCode") is not None
+    assert _by_path(patches, "postalAddresses.0.cityName").needs_resolution == "cityCode"
+
+
+def test_iec_emits_unmapped_patch():
+    patches = tp.patches_from_iec(IecExtraction(iec_code="ABCDE1234F", confidence=0.92))
+    iec = _by_path(patches, "_unmapped.iecCode")
+    assert iec is not None and iec.value == "ABCDE1234F"
+
+
+def test_partnership_emits_registration_and_names():
+    patches = tp.patches_from_partnership(
+        PartnershipExtraction(
+            firm_name="ACME PARTNERS",
+            registration_number="REG-123",
+            confidence=0.88,
+        )
+    )
+    assert _by_path(patches, "_unmapped.partnershipRegistrationNo") is not None
+    assert _by_path(patches, "tradingName") is not None
+
+
+def test_mto_emits_licence_patch():
+    patches = tp.patches_from_mto(MtoExtraction(licence_number="MTO/12345", confidence=0.85))
+    assert _by_path(patches, "_unmapped.mtoLicenceNo") is not None

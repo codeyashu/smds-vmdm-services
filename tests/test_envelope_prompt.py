@@ -16,7 +16,15 @@ def test_messages_have_system_then_user_role():
 def test_system_message_lists_every_doc_type():
     hint = Classification(doc_type=None, confidence=0.0, ambiguous=True)
     messages = build_envelope_messages("text", [], hint)
-    for doc_type in ("IN_PAN_CARD", "IN_GST_CERTIFICATE", "IN_CANCELLED_CHEQUE", "UNKNOWN"):
+    for doc_type in (
+        "IN_PAN_CARD",
+        "IN_GST_CERTIFICATE",
+        "IN_CANCELLED_CHEQUE",
+        "IN_ADDRESS_PROOF",
+        "IN_IEC_CERTIFICATE",
+        "IN_DEED_OF_PARTNERSHIP",
+        "UNKNOWN",
+    ):
         assert doc_type in messages[0].text
 
 
@@ -48,9 +56,40 @@ def test_images_capped_at_five():
     assert len(messages[1].images_b64) == 5
 
 
+def test_scan_mode_prompt_when_ocr_empty_and_images_present():
+    messages = build_envelope_messages(
+        "",
+        ["img1"],
+        Classification(doc_type="IN_PAN_CARD", confidence=0.8, ambiguous=False),
+    )
+    assert "scan" in messages[1].text.lower()
+    assert "attached" in messages[1].text.lower()
+    assert "(no embedded text" in messages[1].text
+
+
+def test_vision_retry_message_keeps_doc_type_context():
+    from app.documents.extract.prompts.india.envelope import build_vision_retry_messages
+
+    messages = build_vision_retry_messages("IN_PAN_CARD", ["pan.pan"], ["img"])
+    assert "IN_PAN_CARD" in messages[1].text
+    assert "pan.pan" in messages[1].text
+    assert messages[1].images_b64 == ["img"]
+
+
 def test_envelope_json_schema_matches_model_properties():
     schema = envelope_json_schema()
-    assert schema["properties"].keys() >= {"doc_type", "pan", "gst", "cheque", "udyam", "coi"}
+    assert schema["properties"].keys() >= {
+        "doc_type",
+        "pan",
+        "gst",
+        "cheque",
+        "udyam",
+        "coi",
+        "address_proof",
+        "iec",
+        "partnership",
+        "mto",
+    }
 
 
 def _object_schemas(schema: dict) -> list[tuple[str, dict]]:
@@ -96,11 +135,15 @@ def test_envelope_json_schema_is_openai_strict_mode_compatible():
 def test_envelope_json_schema_covers_every_nested_model():
     schema = envelope_json_schema()
     assert set(schema["$defs"]) == {
+        "AddressProofExtraction",
         "ChequeExtraction",
         "CoiExtraction",
         "ExtractedAddress",
         "GstExtraction",
+        "IecExtraction",
+        "MtoExtraction",
         "PanExtraction",
+        "PartnershipExtraction",
         "UdyamExtraction",
     }
 

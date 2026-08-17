@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import importlib
 
+import pytest
+
 from app.providers.llm import factory as llm_factory
 from app.providers.ocr import factory as ocr_factory
 
@@ -108,6 +110,52 @@ def test_ocr_provider_auto_prefers_azure_di_when_credentials_present(monkeypatch
     monkeypatch.setenv("DOCAI_DI_KEY", "k")
     provider = ocr_factory.get_ocr_provider()
     assert provider is not None and provider.id == "azure-di"
+
+
+@pytest.mark.asyncio
+async def test_azure_di_attaches_pymupdf_page_images(monkeypatch):
+    import fitz
+
+    doc = fitz.open()
+    page = doc.new_page()
+    page.insert_text((72, 72), "PAN ABCDE1234F")
+    pdf_bytes = doc.tobytes()
+    doc.close()
+
+    class FakeWord:
+        content = "PAN"
+        polygon = [0.0, 0.0, 10.0, 0.0, 10.0, 5.0, 0.0, 5.0]
+        confidence = 0.99
+
+    class FakePage:
+        page_number = 1
+        words = [FakeWord()]
+
+    class FakeResult:
+        content = "PAN ABCDE1234F"
+        pages = [FakePage()]
+
+    class FakePoller:
+        def result(self):
+            return FakeResult()
+
+    class FakeClient:
+        def begin_analyze_document(self, model, request):
+            return FakePoller()
+
+    monkeypatch.setattr(
+        "azure.ai.documentintelligence.DocumentIntelligenceClient",
+        lambda *args, **kwargs: FakeClient(),
+    )
+
+    from app.providers.ocr.azure_di import AzureDiProvider
+
+    provider = AzureDiProvider("https://example.cognitiveservices.azure.com", "k")
+    result = await provider.run(pdf_bytes, "application/pdf")
+    assert result.provider_id == "azure-di"
+    assert result.text == "PAN ABCDE1234F"
+    assert len(result.page_images_b64) == 1
+    assert len(result.page_images_b64[0]) > 100
 
 
 def test_llm_provider_auto_prefers_azure_when_credentials_present(monkeypatch):

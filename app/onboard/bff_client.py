@@ -15,17 +15,13 @@ def portal_base_url() -> str:
     return (os.getenv("VMDM_PORTAL_BFF_URL") or os.getenv("PORTAL_BFF_URL") or DEFAULT_PORTAL_BFF_URL).rstrip("/")
 
 
-def _internal_headers() -> dict[str, str]:
-    headers = {"accept": "application/json", "content-type": "application/json"}
-    secret = os.getenv("ONBOARD_INTERNAL_SECRET")
-    if secret:
-        headers["x-onboard-internal-secret"] = secret
-    return headers
-
-
 async def post_json(path: str, body: dict[str, Any], timeout: float = 30.0) -> dict[str, Any]:
     async with httpx.AsyncClient(base_url=portal_base_url(), timeout=timeout) as client:
-        res = await client.post(path, json=body, headers=_internal_headers())
+        res = await client.post(
+            path,
+            json=body,
+            headers={"accept": "application/json", "content-type": "application/json"},
+        )
         res.raise_for_status()
         data = res.json()
         return data if isinstance(data, dict) else {"data": data}

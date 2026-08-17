@@ -1,0 +1,46 @@
+{
+  "countryCode": "IN",
+  "status": "active",
+  "submitPolicy": "advisory",
+  "minTrustToAutoProceed": 70,
+  "connectors": [
+    {
+      "id": "bill_to_address",
+      "type": "bill_to_address_review",
+      "fields": ["address"],
+      "authority": 0.95
+    },
+    {
+      "id": "in_gstin_live",
+      "type": "in_gstin_live_lookup",
+      "fields": ["tax", "tradingName", "address"],
+      "authority": 1.0
+    },
+    {
+      "id": "commercial_directory",
+      "type": "company_registry_lookup",
+      "fields": ["tradingName", "tax", "address"],
+      "authority": 0.75
+    },
+    {
+      "id": "company_website",
+      "type": "company_website_probe",
+      "fields": ["tradingName"],
+      "authority": 0.6
+    },
+    {
+      "id": "in_gstin",
+      "type": "in_gstin_format",
+      "fields": ["tax"],
+      "authority": 1.0
+    },
+    {
+      "id": "in_pan",
+      "type": "in_pan_format",
+      "fields": ["tax"],
+      "authority": 0.9
+    }
+  ],
+  "allowlistedDomains": ["gst.gov.in", "mca.gov.in"],
+  "fallbackWebSearch": true
+}

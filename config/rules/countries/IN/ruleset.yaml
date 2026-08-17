@@ -1,0 +1,1398 @@
+rulesetId: country/IN
+revision: 1
+layer: country
+selector:
+  iso2CountryCode:
+  - IN
+  vendorStatusReason: PROSPECT
+disable: []
+patch: []
+rules:
+- fieldName: businessUnitProfiles
+  displayLabel: Business Unit Profiles
+  fieldGroupLabel: Vendor
+  isRequired: false
+  isApplicable: true
+  errorMessage: At least one business unit profile is required
+  x:
+    ruleId: in.vendor.businessunitprofiles
+    version: 1
+    contentHash: sha256:576bf73747ddfba5
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: district
+  displayLabel: District
+  fieldGroupLabel: Postal Addresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9.,:;$%&+\]\[*"( )'\/^\-]{0,36}$
+  errorMessage: 'Please enter a district name with a maximum of 36 characters, using
+    only letters, numbers, and special characters: ., :; $% & + * [ ] ( )  / ^ -.'
+  x:
+    ruleId: in.postal-addresses.district
+    version: 1
+    contentHash: sha256:ae6ff92189aaf1b5
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: emailAddress
+  displayLabel: Email
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.electronicAddresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$
+  errorMessage: Please enter a valid email address, containing only letters, numbers,
+    and special characters (+, _, ., -), with a minimum length of 3 characters and
+    no maximum length restriction.
+  x:
+    ruleId: in.vendor-contacts.emailaddress.vendorcontacts-electronicaddresses
+    version: 1
+    contentHash: sha256:9a90a28d8cc919cf
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: emailAddress
+  displayLabel: Email
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.electronicAddresses
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$
+  errorMessage: Email is required. Please enter a valid email address, containing
+    only letters, numbers, and special characters (+, _, ., -), with a minimum length
+    of 3 characters and no maximum length restriction.
+  x:
+    ruleId: in.postal-addresses.emailaddress.postaladdresses-electronicaddresses
+    version: 1
+    contentHash: sha256:5905e3f5ceaf5b1b
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: FAX
+  displayLabel: Fax Number
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.telecommunicationNumbers
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[1-9]{1}[0-9]{9}$
+  errorMessage: Fax Number must be 10 digits long, starting with a non-zero digit,
+    and contain only numbers (0-9).
+  x:
+    ruleId: in.vendor-contacts.fax.vendorcontacts-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:de41ee3105b8b5ea
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: FAX
+  displayLabel: Fax Number
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.telecommunicationNumbers
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[1-9]{1}[0-9]{9}$
+  errorMessage: Fax Number must be 10 digits long, starting with a non-zero digit,
+    and contain only numbers (0-9).
+  x:
+    ruleId: in.postal-addresses.fax.postaladdresses-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:5c2265b4c265a478
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: isAlternatePayeeDocumentRequired
+  displayLabel: 'Alt Payee Doc '
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: true
+  x:
+    ruleId: in.vendor-core-details.isalternatepayeedocumentrequired
+    version: 1
+    contentHash: sha256:06198d394159f8ff
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: MOB
+  displayLabel: Mobile number
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.telecommunicationNumbers
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[1-9]{1}[0-9]{9}$
+  errorMessage: Please enter a valid mobile number, starting with a digit between
+    1-9, followed by 9 digits, for a total length of 10 digits, using only numbers
+    0-9.
+  x:
+    ruleId: in.vendor-contacts.mob.vendorcontacts-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:e774409fa7d2658b
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: MOB
+  displayLabel: Mobile number
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.telecommunicationNumbers
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[1-9]{1}[0-9]{9}$
+  errorMessage: Please enter a valid mobile number, starting with a digit between
+    1-9, followed by 9 digits, for a total length of 10 digits, using only numbers
+    0-9.
+  x:
+    ruleId: in.postal-addresses.mob.postaladdresses-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:0889285e607f7061
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: permittedPayees
+  displayLabel: permittedPayees
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: true
+  x:
+    ruleId: in.vendor-core-details.permittedpayees
+    version: 1
+    contentHash: sha256:9a39185b190384dc
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: postalCode
+  displayLabel: Postal Code
+  fieldGroupLabel: Postal Addresses
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[0-9]{6}$
+  errorMessage: Postal Code is required. Please enter a valid postal code consisting
+    of exactly 6 numeric characters (0-9).
+  x:
+    ruleId: in.postal-addresses.postalcode
+    version: 1
+    contentHash: sha256:784aa0d84eb28034
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: regionCode
+  displayLabel: Region Name
+  fieldGroupLabel: Postal Addresses
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9 ]{1,15}$
+  errorMessage: Region Name is required. Region Name must be 1-15 characters long
+    and contain only letters, numbers, and spaces.
+  x:
+    ruleId: in.postal-addresses.regioncode
+    version: 1
+    contentHash: sha256:d9311833d430bb7c
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: streetNumber
+  displayLabel: Street Number/House Number
+  fieldGroupLabel: Postal Addresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9.,:;$%&+\]\[*"( )'\/^\-]{0,20}$
+  errorMessage: Please enter a valid Street Number/House Number, up to 20 characters,
+    containing only letters, numbers, and special characters .,:;$%&+[]*( )/^-.
+  x:
+    ruleId: in.postal-addresses.streetnumber
+    version: 1
+    contentHash: sha256:c663f4b9e1fae650
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxClassificationCode
+  displayLabel: Tax Classification Code
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: (01|02|03|04)$
+  errorMessage: 'Tax Classification Code must be one of: 01, 02, 03 or 04.'
+  x:
+    ruleId: in.tax-identification-type.taxclassificationcode
+    version: 1
+    contentHash: sha256:4262e12f4532cfa5
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxDeclarationRegimeCode
+  displayLabel: Tax Declaration Regime Code
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: false
+  errorMessage: Tax Declaration Regime Code is not applicable for IN country.
+  x:
+    ruleId: in.tax-identification-type.taxdeclarationregimecode
+    version: 1
+    contentHash: sha256:ceae77e8105f565a
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxDeclarationTypeCode
+  displayLabel: Tax Declaration Type
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: false
+  errorMessage: Tax Declaration Type is not applicable for IN country.
+  x:
+    ruleId: in.tax-identification-type.taxdeclarationtypecode
+    version: 1
+    contentHash: sha256:7cc3a688530a5a20
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxJurisdictionCode
+  displayLabel: Tax Jurisdiction Code
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: false
+  errorMessage: Tax Jurisdiction Code is not applicable for IN country.
+  x:
+    ruleId: in.tax-identification-type.taxjurisdictioncode
+    version: 1
+    contentHash: sha256:484f67f17ef9eb0c
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: TAXNO1
+  displayLabel: 'INDIA: VAT Registraton Number'
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: false
+  errorMessage: For country India, VAT Reg No is not in use
+  x:
+    ruleId: in.tax-identification-type.taxno1
+    version: 1
+    contentHash: sha256:6212523df13037c0
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: TAXNO3
+  displayLabel: 'India: Tax Identification Number (TIN)/PAN'
+  fieldGroupLabel: Tax Identification Type
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[A-Z]{5}[0-9]{4}[A-Z]{1}$|^ZZ$
+  errorMessage: For country India, Tax Identification Number (TIN)/PAN is mandatory
+    and must be 10 characters in the format LLLLLNNNNL.
+  x:
+    ruleId: in.tax-identification-type.taxno3
+    version: 1
+    contentHash: sha256:21b80dc984c29496
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: TAXNO4
+  displayLabel: 'India: GST Identification Number(GSTIN)'
+  fieldGroupLabel: Tax Identification Type
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^\d{2}[a-zA-Z]{5}\d{4}[a-zA-Z]{1}.{3}$|^\d{2}[A-Za-z]{4}\d{5}[A-Za-z]\d[A-Za-z]{2}$|^\d{4}[a-zA-Z]{3}\d{5}[a-zA-Z]{2}\d$|^\d{4}[A-Za-z]{3}\d{5}[A-Za-z]{3}$
+  errorMessage: For India, the GST tax number is 15 characters in the formats NNLLLLLNNNNLXXX
+    or NNNNLLLNNNNNLLN or NNLLLLNNNNNLNLL or NNNNLLLNNNNNLLL. For example, 12ABCDE1234ABCD,
+    1234ABC12345AB1 or 12ABCD12345A1BC or 2717THA00034UNO
+  x:
+    ruleId: in.tax-identification-type.taxno4
+    version: 1
+    contentHash: sha256:a45c4207fc39122f
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: TEL
+  displayLabel: Telephone
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.telecommunicationNumbers
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[1-9]{1}[0-9]{9}$
+  errorMessage: Please enter a valid telephone number, starting with a digit between
+    1-9, followed by 9 digits, for a total length of 10 digits, using only numbers.
+  x:
+    ruleId: in.vendor-contacts.tel.vendorcontacts-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:cbe4fd5d56c12c4a
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: TEL
+  displayLabel: Telephone
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.telecommunicationNumbers
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[1-9]{1}[0-9]{9}$
+  errorMessage: Telephone is required. Please enter a valid telephone number, starting
+    with a digit between 1-9, followed by 9 digits, for a total length of 10 digits,
+    using only numbers.
+  x:
+    ruleId: in.postal-addresses.tel.postaladdresses-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:55489d8c263be8a5
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: vendorClassificationTypeCode
+  displayLabel: Vendor classification Type
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^(01|02|03)$
+  errorMessage: For country IN, only the values 01, 02, or 03 are allowed.
+  x:
+    ruleId: in.vendor-core-details.vendorclassificationtypecode
+    version: 1
+    contentHash: sha256:ef1ad0e68a2d63da
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: buildingName
+  displayLabel: Building Name
+  fieldGroupLabel: Postal Addresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9.,:;$%&+\]\[*"( )'\/^\-]{0,36}$
+  errorMessage: 'Building Name must be 36 characters or less, containing only letters,
+    numbers, and special characters: ., :; $ % & + ] [ * ( )  / ^ -'
+  x:
+    ruleId: in.postal-addresses.buildingname
+    version: 1
+    contentHash: sha256:a245012812bc75ff
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: cityCode
+  displayLabel: 'City '
+  fieldGroupLabel: Postal Addresses
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9&./]{1,13}$
+  errorMessage: City Code is mandatory. City Code must be 1-13 characters long and
+    contain only letters (a-z, A-Z), numbers (0-9), and special characters (&, .,
+    /).
+  x:
+    ruleId: in.postal-addresses.citycode
+    version: 1
+    contentHash: sha256:ad4add3ca4481870
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: contactAddressPurposeCode
+  displayLabel: Contact Address Purpose Code
+  fieldGroupLabel: Postal Addresses
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[A-Z0-9_]{1,20}$
+  errorMessage: Contact Address Purpose Code is mandatory. Contact Address Purpose
+    Code must be 1-20 characters long and contain only uppercase letters, numbers,
+    and underscores.
+  x:
+    ruleId: in.postal-addresses.contactaddresspurposecode
+    version: 1
+    contentHash: sha256:297b992ef4cbe25a
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: corporateGroupCode
+  displayLabel: Corporate Group Code
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[A-Za-z0-9 ]{1,50}$
+  errorMessage: Corporate Group Code must be between 1 and 50 characters and contain
+    only letters, numbers, and spaces.
+  x:
+    ruleId: in.vendor-core-details.corporategroupcode
+    version: 1
+    contentHash: sha256:5fa96e54b1d58cf8
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: industryClassificationCode
+  displayLabel: Industry Classification Code
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[A-Z0-9]{1,4}$
+  errorMessage: Industry Classification Code must be 1-4 characters long and contain
+    only uppercase letters and numbers.
+  x:
+    ruleId: in.tax-identification-type.industryclassificationcode
+    version: 1
+    contentHash: sha256:6588b8afc79018af
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: intercompanyActivityTypeCode
+  displayLabel: Intercompany Activity Type
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: false
+  regexPattern: ^[A-Z]{3}$
+  errorMessage: Intercompany Activity Type must be exactly 3 characters long and contain
+    only uppercase letters (A-Z).
+  x:
+    ruleId: in.vendor-core-details.intercompanyactivitytypecode
+    version: 1
+    contentHash: sha256:1445f3ba9f2a388f
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: internationalCharacterSetCode
+  displayLabel: Local language
+  fieldGroupLabel: Postal Addresses
+  isRequired: false
+  isApplicable: false
+  regexPattern: ^[A-Z0-9]{1}$
+  errorMessage: Local Language Code is not applicable
+  x:
+    ruleId: in.postal-addresses.internationalcharactersetcode
+    version: 1
+    contentHash: sha256:4f3dd0f87833b19c
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: isIcmsTaxpayer
+  displayLabel: ' Is Icms Taxpayer'
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  x:
+    ruleId: in.tax-identification-type.isicmstaxpayer
+    version: 1
+    contentHash: sha256:bff5d3a6c6f411ed
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: isNaturalPerson
+  displayLabel: Is Natural Person
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  x:
+    ruleId: in.tax-identification-type.isnaturalperson
+    version: 1
+    contentHash: sha256:8b795548a5ad4e54
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: iso2LanguageCode
+  displayLabel: Language
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[A-Z0-9]{2}$
+  errorMessage: Language Code is mandatory and must contain exactly 2 uppercase letters
+    and/or digits.
+  x:
+    ruleId: in.vendor-core-details.iso2languagecode
+    version: 1
+    contentHash: sha256:e9510788ac12455b
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: latitude
+  displayLabel: Latitude
+  fieldGroupLabel: Postal Addresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^(-?([0-8]?\d(\.\d+)?|90(\.0+)?))$
+  errorMessage: Latitude must be between -90 and 90 degrees, allowing numeric characters,
+    decimal point, and optional negative sign, with a maximum length of 10 characters.
+  x:
+    ruleId: in.postal-addresses.latitude
+    version: 1
+    contentHash: sha256:fbcb39679c1ed877
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: longitude
+  displayLabel: Longitude
+  fieldGroupLabel: Postal Addresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^(-?(1[0-7]\d(\.\d+)?|0?\d{1,2}(\.\d+)?|180(\.0+)?))$
+  errorMessage: Please enter a valid Longitude between -180 and 180, allowing numbers,
+    decimal point, and negative sign, with a maximum of 10 characters.
+  x:
+    ruleId: in.postal-addresses.longitude
+    version: 1
+    contentHash: sha256:7b08c9be1af0a8a9
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: postOfficeBox
+  displayLabel: PO Box
+  fieldGroupLabel: Postal Addresses
+  relatedFields:
+  - streetName
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9.,:;$%&+\]\[*"( )'\/^\-]{0,10}$
+  errorMessage: 'PO Box must be 10 characters or less and can only contain letters,
+    numbers, and special characters: ., :; $ % & + ] [ * ( )  / ^ -'
+  dependencies:
+  - ruleType: atLeastOne
+    applicableFields:
+    - streetName
+    - postOfficeBox
+    errorMessage: Either Street Name or PO Box is Mandatory.
+  x:
+    ruleId: in.postal-addresses.postofficebox
+    version: 1
+    contentHash: sha256:f14fd8cbe77a199d
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: streetName
+  displayLabel: Street
+  fieldGroupLabel: Postal Addresses
+  relatedFields:
+  - postOfficeBox
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9.,:;$%&+\]\[*"( )'\/^\-]{0,256}$
+  errorMessage: 'Please enter a valid street address, up to 256 characters, containing
+    only letters, numbers, and special characters: ., : ; $ % & + [ ] * ( )  / ^ -.'
+  dependencies:
+  - ruleType: atLeastOne
+    applicableFields:
+    - streetName
+    - postOfficeBox
+    errorMessage: Either Street Name or PO Box is Mandatory.
+  x:
+    ruleId: in.postal-addresses.streetname
+    version: 1
+    contentHash: sha256:37a6dddf95da24f1
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxCategoryCode
+  displayLabel: Tax Category Code
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[0-9]$
+  errorMessage: Tax Category Code must be a single digit (0-9) and exactly 1 character
+    in length.
+  x:
+    ruleId: in.tax-identification-type.taxcategorycode
+    version: 1
+    contentHash: sha256:43f726c15051d482
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxClassificationCode
+  displayLabel: Tax Classification Code
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^\d{2}$
+  errorMessage: Tax Classification Code must be 2 digits in length and contain only
+    numeric characters (0-9).
+  x:
+    ruleId: in.tax-identification-type.taxclassificationcode-2
+    version: 1
+    contentHash: sha256:56a97d83e4661832
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxDeclarationRegimeCode
+  displayLabel: Tax Declaration Regime Code
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[A-Za-z]{2}$
+  errorMessage: Tax Declaration Regime must be exactly 2 letters long and contain
+    only alphabetic characters.
+  x:
+    ruleId: in.tax-identification-type.taxdeclarationregimecode-2
+    version: 1
+    contentHash: sha256:c82e16c6f90e9918
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxDeclarationTypeCode
+  displayLabel: Tax Declaration Type
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[A-Za-z]{2}$
+  errorMessage: Tax Declaration must be exactly 2 letters long and contain only alphabetic
+    characters.
+  x:
+    ruleId: in.tax-identification-type.taxdeclarationtypecode-2
+    version: 1
+    contentHash: sha256:dc62e2f6ddbd82fb
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxIdentificationTypeCode
+  displayLabel: Tax Identification Type Code
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[A-Z0-9]{1,20}$
+  errorMessage: Tax Identification Type Code must be 1-20 characters long and contain
+    only uppercase letters and numbers.
+  x:
+    ruleId: in.tax-identification-type.taxidentificationtypecode
+    version: 1
+    contentHash: sha256:2765d2e77d911b9e
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: tradingName
+  displayLabel: Trading Name
+  fieldGroupLabel: Vendor Core Details
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9.,:;$%&+\]\[*"( )'\/^\-]{3,128}$
+  errorMessage: 'Trading Name is mandatory. Trading Name must be between 3 and 128
+    characters, containing only letters, numbers, and special characters: ., :; $
+    % & + ] [ *  ( )  / ^ -'
+  x:
+    ruleId: in.vendor-core-details.tradingname
+    version: 1
+    contentHash: sha256:26c8330f66df51cf
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: tradingPartnerCode
+  displayLabel: Trading Partner
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: false
+  regexPattern: ^[A-Z]{2,3}\d{2,3}[A-Z]$
+  errorMessage: Trading Partner must be 5-7 characters long, consisting of 2-3 uppercase
+    letters, followed by 2-3 digits, and ending with an uppercase letter.
+  x:
+    ruleId: in.vendor-core-details.tradingpartnercode
+    version: 1
+    contentHash: sha256:ef65b3036c275792
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: vendorGroupType
+  displayLabel: Account Group
+  fieldGroupLabel: Vendor Core Details
+  relatedFields:
+  - tradingPartnerCode
+  - intercompanyActivityTypeCode
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^(ZINT|ZEXT)$
+  errorMessage: Account Group is required. Account Group must be either ZINT or ZEXT,
+    exactly 4 characters long, containing only letters.
+  dependencies:
+  - ruleType: conditional
+    conditions:
+    - fieldName: vendorGroupType
+      operator: equals
+      values:
+      - ZINT
+      action:
+        targetFields:
+        - tradingPartnerCode
+        actionType: makeApplicable
+  - ruleType: conditional
+    conditions:
+    - fieldName: vendorGroupType
+      operator: equals
+      values:
+      - ZINT
+      action:
+        targetFields:
+        - tradingPartnerCode
+        actionType: makeRequired
+    errorMessage: Trading Partner Code is mandatory for Inter-Company vendors (ZINT).
+  - ruleType: conditional
+    conditions:
+    - fieldName: vendorGroupType
+      operator: equals
+      values:
+      - ZINT
+      action:
+        targetFields:
+        - intercompanyActivityTypeCode
+        actionType: makeApplicable
+  - ruleType: conditional
+    conditions:
+    - fieldName: vendorGroupType
+      operator: equals
+      values:
+      - ZINT
+      action:
+        targetFields:
+        - intercompanyActivityTypeCode
+        actionType: makeRequired
+    errorMessage: Intercompany Activity Type Code is mandatory for Inter-Company vendors
+      (ZINT).
+  x:
+    ruleId: in.vendor-core-details.vendorgrouptype
+    version: 1
+    contentHash: sha256:f726bfb224c4aee1
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: vendorStatusReasonCode
+  displayLabel: Status Reason
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: false
+  errorMessage: Vendor Status Reason is automatically determined by the system and
+    is not editable.
+  x:
+    ruleId: in.vendor-core-details.vendorstatusreasoncode
+    version: 1
+    contentHash: sha256:91f31995b9095668
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.384998Z'
+    updatedAt: '2026-08-12T16:20:30.384998Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []

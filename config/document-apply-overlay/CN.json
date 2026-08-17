@@ -1,0 +1,101 @@
+{
+  "countryCode": "CN",
+  "updatedAt": "1970-01-01T00:00:00.000Z",
+  "multiSourceFields": {
+    "tradingName": [
+      "CN_BUSINESS_LICENSE"
+    ],
+    "legalName": [
+      "CN_BUSINESS_LICENSE"
+    ],
+    "postalAddresses.0.cityName": [
+      "CN_BUSINESS_LICENSE"
+    ]
+  },
+  "documents": [
+    {
+      "docType": "CN_BUSINESS_LICENSE",
+      "writable": true,
+      "attributes": [
+        {
+          "label": "USCC",
+          "formPath": "taxInformation.taxIdentificationNumbers.0.taxIdentificationNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "CN_BUSINESS_LICENSE__taxInformation_taxIdentificationNumbers_0_taxIdentificationNumber"
+        },
+        {
+          "label": "Legal name",
+          "formPath": "legalName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "CN_BUSINESS_LICENSE__legalName"
+        },
+        {
+          "label": "Trading name",
+          "formPath": "tradingName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "CN_BUSINESS_LICENSE__tradingName"
+        },
+        {
+          "label": "Street",
+          "formPath": "postalAddresses.0.streetName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "CN_BUSINESS_LICENSE__postalAddresses_0_streetName"
+        },
+        {
+          "label": "Building name",
+          "formPath": "postalAddresses.0.buildingName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "CN_BUSINESS_LICENSE__postalAddresses_0_buildingName"
+        },
+        {
+          "label": "City",
+          "formPath": "postalAddresses.0.cityName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "CN_BUSINESS_LICENSE__postalAddresses_0_cityName"
+        },
+        {
+          "label": "Postal code",
+          "formPath": "postalAddresses.0.postalCode",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "CN_BUSINESS_LICENSE__postalAddresses_0_postalCode"
+        }
+      ]
+    },
+    {
+      "docType": "CN_BANK_ACCOUNT_PERMIT",
+      "writable": true,
+      "attributes": [
+        {
+          "label": "Bank account number",
+          "formPath": "vendorBankAccounts.0.bankAccountNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "CN_BANK_ACCOUNT_PERMIT__vendorBankAccounts_0_bankAccountNumber"
+        },
+        {
+          "label": "Bank name",
+          "formPath": "vendorBankAccounts.0.bankName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "CN_BANK_ACCOUNT_PERMIT__vendorBankAccounts_0_bankName"
+        }
+      ]
+    }
+  ]
+}

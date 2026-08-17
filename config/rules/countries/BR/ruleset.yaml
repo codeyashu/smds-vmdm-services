@@ -1,0 +1,2032 @@
+rulesetId: country/BR
+revision: 1
+layer: country
+selector:
+  iso2CountryCode:
+  - BR
+  vendorStatusReason: PROSPECT
+disable: []
+patch: []
+rules:
+- fieldName: businessUnitProfiles
+  displayLabel: Business Unit Profiles
+  fieldGroupLabel: Vendor
+  isRequired: false
+  isApplicable: true
+  errorMessage: At least one business unit profile is required
+  x:
+    ruleId: br.vendor.businessunitprofiles
+    version: 1
+    contentHash: sha256:576bf73747ddfba5
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: district
+  displayLabel: District
+  fieldGroupLabel: Postal Addresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9.,:;$%&+\]\[*"( )'\/^\-]{0,36}$
+  errorMessage: 'Please enter a district name with a maximum of 36 characters, using
+    only letters, numbers, and special characters: ., :; $ % & + ] [ * ( )  / ^ -.'
+  x:
+    ruleId: br.postal-addresses.district
+    version: 1
+    contentHash: sha256:a63c1f846e2c3c85
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: emailAddress
+  displayLabel: Email
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.electronicAddresses
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$
+  errorMessage: Email is required. Please enter a valid email address, containing
+    only letters, numbers, and special characters (+, _, ., -), with a minimum length
+    of 3 characters and no maximum length restriction.
+  x:
+    ruleId: br.postal-addresses.emailaddress.postaladdresses-electronicaddresses
+    version: 1
+    contentHash: sha256:5905e3f5ceaf5b1b
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: emailAddress
+  displayLabel: Email
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.electronicAddresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$
+  errorMessage: Please enter a valid email address, containing only letters, numbers,
+    and special characters (+, _, ., -), with a minimum length of 3 characters and
+    no maximum length restriction.
+  x:
+    ruleId: br.vendor-contacts.emailaddress.vendorcontacts-electronicaddresses
+    version: 1
+    contentHash: sha256:9a90a28d8cc919cf
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: FAX
+  displayLabel: Fax Number
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.telecommunicationNumbers
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[1-9]{1}[0-9]{9}$|^[1-9]{1}[0-9]{10}$
+  errorMessage: Please enter a valid fax number, consisting of 10 or 11 digits, starting
+    with a non-zero digit, using only numbers 0-9.
+  x:
+    ruleId: br.vendor-contacts.fax.vendorcontacts-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:2fed8c2e4302bae7
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: FAX
+  displayLabel: Fax Number
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.telecommunicationNumbers
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[1-9]{1}[0-9]{9}$|^[1-9]{1}[0-9]{10}$
+  errorMessage: Please enter a valid fax number, consisting of 10 or 11 digits, starting
+    with a non-zero digit, using only numbers 0-9.
+  x:
+    ruleId: br.postal-addresses.fax.postaladdresses-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:096050f2cf5af1b4
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: isAlternatePayeeDocumentRequired
+  displayLabel: 'Alt Payee Doc '
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: true
+  x:
+    ruleId: br.vendor-core-details.isalternatepayeedocumentrequired
+    version: 1
+    contentHash: sha256:06198d394159f8ff
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: MOB
+  displayLabel: Mobile number
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.telecommunicationNumbers
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[1-9]{1}[0-9]{9}$|^[1-9]{1}[0-9]{10}$
+  errorMessage: Please enter a valid mobile number, starting with a digit between
+    1-9, followed by 9 or 10 digits, using only numbers, with a minimum length of
+    10 and a maximum length of 11 characters.
+  x:
+    ruleId: br.postal-addresses.mob.postaladdresses-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:1824ee03654358a0
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: MOB
+  displayLabel: Mobile number
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.telecommunicationNumbers
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[1-9]{1}[0-9]{9}$|^[1-9]{1}[0-9]{10}$
+  errorMessage: Please enter a valid mobile number, starting with a digit between
+    1-9, followed by 9 or 10 digits, using only numbers, with a minimum length of
+    10 and a maximum length of 11 characters.
+  x:
+    ruleId: br.vendor-contacts.mob.vendorcontacts-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:06032da420bad1e2
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: postalCode
+  displayLabel: Postal Code
+  fieldGroupLabel: Postal Addresses
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[0-9]{5}-[0-9]{3}$
+  errorMessage: Postal Code is required. Please enter a valid postal code, consisting
+    of 5 digits, followed by a hyphen, and then 3 more digits, for a total length
+    of 9 characters, using only numbers and a hyphen.
+  x:
+    ruleId: br.postal-addresses.postalcode
+    version: 1
+    contentHash: sha256:80b8877723c4a82a
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: regionCode
+  displayLabel: Region
+  fieldGroupLabel: Postal Addresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9 ]{1,15}$
+  errorMessage: Region must be 1-15 characters long and contain only letters, numbers,
+    and spaces.
+  x:
+    ruleId: br.postal-addresses.regioncode
+    version: 1
+    contentHash: sha256:e10984577eabcf03
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: streetNumber
+  displayLabel: Street Number/House Number
+  fieldGroupLabel: Postal Addresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9.,:;$%&+\]\[*"( )'\/^\-]{0,20}$
+  errorMessage: 'Please enter a valid Street Number/House Number, up to 20 characters,
+    using letters, numbers, and special characters (. , : ; $ % & + )  / - [ ] * ^.'
+  x:
+    ruleId: br.postal-addresses.streetnumber
+    version: 1
+    contentHash: sha256:8e612615f20a6f31
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxClassificationCode
+  displayLabel: Tax Type
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: (01|02|03|04)$
+  errorMessage: 'Tax Classification Code must be one of: 01, 02, 03 or 04.'
+  x:
+    ruleId: br.tax-identification-type.taxclassificationcode
+    version: 1
+    contentHash: sha256:bae41584d81e7b44
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxDeclarationRegimeCode
+  displayLabel: Tax Declaration Regime Code
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[A-Za-z]{2}$
+  errorMessage: Tax Declaration Regime must be exactly 2 letters long and contain
+    only alphabetic characters.
+  x:
+    ruleId: br.tax-identification-type.taxdeclarationregimecode
+    version: 1
+    contentHash: sha256:c82e16c6f90e9918
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxDeclarationTypeCode
+  displayLabel: Tax Declaration Type
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[A-Za-z]{2}$
+  errorMessage: Tax Declaration Type must be exactly 2 letters long and contain only
+    alphabetic characters.
+  x:
+    ruleId: br.tax-identification-type.taxdeclarationtypecode
+    version: 1
+    contentHash: sha256:b8b1e19302ca2104
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxJurisdictionCode
+  displayLabel: Tax Jurisdiction Code
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^(\d{10}|[A-Z]{2} \d{7})$
+  errorMessage: Tax Jurisdiction Code must be 10 digits or 2 uppercase letters followed
+    by 7 digits, with a space between the letters and numbers, and must be between
+    10 and 11 characters in length.
+  x:
+    ruleId: br.tax-identification-type.taxjurisdictioncode
+    version: 1
+    contentHash: sha256:fa88fea0cd2bf688
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: TAXNO2
+  displayLabel: 'Brazil: CNPJ Number'
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[0-9]{14}$
+  errorMessage: 'For country BR, Brazil: CNPJ Number must be exactly 14 digits.'
+  x:
+    ruleId: br.tax-identification-type.taxno2
+    version: 1
+    contentHash: sha256:dc968d32d186aae0
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: TAXNO3
+  displayLabel: 'Brazil: CPF Number'
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[0-9]{11}$
+  errorMessage: 'For country BR, Brazil: CPF Number must be exactly 11 digits.'
+  x:
+    ruleId: br.tax-identification-type.taxno3
+    version: 1
+    contentHash: sha256:738420ec2725fad4
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: TAXNO4
+  displayLabel: 'Brazil: State Tax Number'
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[0-9]{8,14}$
+  errorMessage: 'For country BR, Brazil: State Tax Number must be between 8 and 14
+    digits.'
+  x:
+    ruleId: br.tax-identification-type.taxno4
+    version: 1
+    contentHash: sha256:29dbf3e3c30e51b5
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: TAXNO5
+  displayLabel: 'Brazil: Municipal Tax Number'
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[0-9]{5,15}$
+  errorMessage: 'For country BR, Brazil: Municipal Tax Number must be between 5 and
+    15 digits.'
+  x:
+    ruleId: br.tax-identification-type.taxno5
+    version: 1
+    contentHash: sha256:81cda560608a2efe
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: TAXNO7
+  displayLabel: 'Brazil: SUFRAMA code'
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[0-9]{9}$
+  errorMessage: 'For country BR, Brazil: SUFRAMA code must be exactly 9 digits.'
+  x:
+    ruleId: br.tax-identification-type.taxno7
+    version: 1
+    contentHash: sha256:8af91f9f570484b3
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: TEL
+  displayLabel: Telephone
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.telecommunicationNumbers
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[1-9]{1}[0-9]{9}$|^[1-9]{1}[0-9]{10}$
+  errorMessage: Telephone must be 10 or 11 digits, starting with a non-zero digit,
+    and contain only numbers.
+  x:
+    ruleId: br.vendor-contacts.tel.vendorcontacts-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:b39bdd4e7374510b
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: TEL
+  displayLabel: Telephone
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.telecommunicationNumbers
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[1-9]{1}[0-9]{9}$|^[1-9]{1}[0-9]{10}$
+  errorMessage: Telephone is required. Telephone must be 10 or 11 digits, starting
+    with a non-zero digit, and contain only numbers.
+  x:
+    ruleId: br.postal-addresses.tel.postaladdresses-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:140518851d38ff85
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: vendorClassificationTypeCode
+  displayLabel: Vendor classification Type
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: false
+  errorMessage: Vendor Classification Type is not applicable.
+  x:
+    ruleId: br.vendor-core-details.vendorclassificationtypecode
+    version: 1
+    contentHash: sha256:2f90c38eef78f716
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: buildingName
+  displayLabel: Building Name
+  fieldGroupLabel: Postal Addresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9.,:;$%&+\]\[*"( )'\/^\-]{0,36}$
+  errorMessage: 'Building Name must be 36 characters or less, containing only letters,
+    numbers, and special characters: ., :; $ % & + ] [ * ( )  / ^ -'
+  x:
+    ruleId: br.postal-addresses.buildingname
+    version: 1
+    contentHash: sha256:a245012812bc75ff
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: cityCode
+  displayLabel: 'City '
+  fieldGroupLabel: Postal Addresses
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9&./]{1,13}$
+  errorMessage: City Code is mandatory. City Code must be 1-13 characters long and
+    contain only letters (a-z, A-Z), numbers (0-9), and special characters (&, .,
+    /).
+  x:
+    ruleId: br.postal-addresses.citycode
+    version: 1
+    contentHash: sha256:ad4add3ca4481870
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: communicationMediaType
+  displayLabel: Communication Media Type
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.electronicAddresses
+  isRequired: true
+  isApplicable: true
+  errorMessage: Communication Media Type is mandatory and can contain EMAIL or WEB
+    as input.
+  x:
+    ruleId: br.postal-addresses.communicationmediatype.postaladdresses-electronicaddresses
+    version: 1
+    contentHash: sha256:9c4b065bfbde7525
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: communicationMediaType
+  displayLabel: Communication Media Type
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.electronicAddresses
+  isRequired: true
+  isApplicable: true
+  errorMessage: Communication Media Type is mandatory and can contain EMAIL or WEB
+    as input.
+  x:
+    ruleId: br.vendor-contacts.communicationmediatype.vendorcontacts-electronicaddresses
+    version: 1
+    contentHash: sha256:0091bbe38d0b0106
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: communicationPreference
+  displayLabel: Communication Preference
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses
+  isRequired: false
+  isApplicable: true
+  x:
+    ruleId: br.postal-addresses.communicationpreference.postaladdresses
+    version: 1
+    contentHash: sha256:3b9a6bc62f025318
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: communicationPreference
+  displayLabel: Communication Preference
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts
+  isRequired: false
+  isApplicable: true
+  x:
+    ruleId: br.vendor-contacts.communicationpreference.vendorcontacts
+    version: 1
+    contentHash: sha256:1cec165a87004652
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: contactAddressPurposeCode
+  displayLabel: Contact Address Purpose Code
+  fieldGroupLabel: Postal Addresses
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[A-Z0-9_]{1,20}$
+  errorMessage: Contact Address Purpose Code is mandatory. Contact Address Purpose
+    Code must be 1-20 characters long and contain only uppercase letters, numbers,
+    and underscores.
+  x:
+    ruleId: br.postal-addresses.contactaddresspurposecode
+    version: 1
+    contentHash: sha256:297b992ef4cbe25a
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: corporateGroupCode
+  displayLabel: Corporate Group Code
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[A-Za-z0-9 ]{1,50}$
+  errorMessage: Corporate Group Code must be between 1 and 50 characters and contain
+    only letters, numbers, and spaces.
+  dependencies:
+  - ruleType: conditional
+    conditions:
+    - fieldName: corporateGroupCode
+      operator: equals
+      values:
+      - CG03
+      action:
+        targetFields:
+        - TAXNO1
+        actionType: makeOptional
+  x:
+    ruleId: br.vendor-core-details.corporategroupcode
+    version: 1
+    contentHash: sha256:c2405c4796e595be
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: countryCallingCode
+  displayLabel: Country Calling Code
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.telecommunicationNumbers
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[+]*[0-9\\s]{1,5}$
+  errorMessage: Country Calling Code is mandatory. Please enter a valid Country Calling
+    Code, allowing a plus sign (+) followed by 1 to 5 digits or spaces.
+  x:
+    ruleId: br.postal-addresses.countrycallingcode.postaladdresses-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:be14a52b08ea2b45
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: countryCallingCode
+  displayLabel: Country Calling Code
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.telecommunicationNumbers
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[+]*[0-9\\s]{1,5}$
+  errorMessage: Country Calling Code is mandatory. Please enter a valid Country Calling
+    Code, allowing a plus sign (+) followed by 1 to 5 digits or spaces.
+  x:
+    ruleId: br.vendor-contacts.countrycallingcode.vendorcontacts-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:07a32c77eeb4e760
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: emailAddressUsageCode
+  displayLabel: Email Address Usage Code
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.electronicAddresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[0-9]{1}$
+  errorMessage: Email Address Usage Code must be a single digit between 0 and 9, exactly
+    1 character in length.
+  x:
+    ruleId: br.vendor-contacts.emailaddressusagecode.vendorcontacts-electronicaddresses
+    version: 1
+    contentHash: sha256:a4397095ef9f56bc
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: emailAddressUsageCode
+  displayLabel: Email Address Usage Code
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.electronicAddresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[0-9]{1}$
+  errorMessage: Email Address Usage Code must be a single digit between 0 and 9, exactly
+    1 character in length.
+  x:
+    ruleId: br.postal-addresses.emailaddressusagecode.postaladdresses-electronicaddresses
+    version: 1
+    contentHash: sha256:e3cd7f48b334de59
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: extensionNumber
+  displayLabel: Extension Number
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.telecommunicationNumbers
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[0-9]{1,10}$
+  errorMessage: Extension Number must be between 1 and 10 digits in length and contain
+    only numeric characters (0-9).
+  x:
+    ruleId: br.postal-addresses.extensionnumber.postaladdresses-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:6119b424494b5123
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: extensionNumber
+  displayLabel: Extension Number
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.telecommunicationNumbers
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[0-9]{1,10}$
+  errorMessage: Extension Number must be between 1 and 10 digits in length and contain
+    only numeric characters (0-9).
+  x:
+    ruleId: br.vendor-contacts.extensionnumber.vendorcontacts-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:b4acd7e2af140f05
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: firstName
+  displayLabel: First Name
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z '-]{1,128}$
+  errorMessage: First Name must be between 1 and 128 characters, containing only letters,
+    numbers, spaces, apostrophes, and hyphens.
+  x:
+    ruleId: br.vendor-contacts.firstname.vendorcontacts
+    version: 1
+    contentHash: sha256:d6638faa1d801dee
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: industryClassificationCode
+  displayLabel: Industry Classification Code
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[A-Z0-9]{1,4}$
+  errorMessage: Industry Classification Code must be 1-4 characters long and contain
+    only uppercase letters and numbers.
+  x:
+    ruleId: br.tax-identification-type.industryclassificationcode
+    version: 1
+    contentHash: sha256:6588b8afc79018af
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: intercompanyActivityTypeCode
+  displayLabel: Intercompany Activity Type
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: false
+  regexPattern: ^[A-Z]{3}$
+  errorMessage: Intercompany Activity Type must be exactly 3 characters long and contain
+    only uppercase letters (A-Z).
+  x:
+    ruleId: br.vendor-core-details.intercompanyactivitytypecode
+    version: 1
+    contentHash: sha256:1445f3ba9f2a388f
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: internationalCharacterSetCode
+  displayLabel: Local language
+  fieldGroupLabel: Postal Addresses
+  isRequired: false
+  isApplicable: false
+  regexPattern: ^[A-Z0-9]{1}$
+  errorMessage: Local Language Code is not applicable
+  x:
+    ruleId: br.postal-addresses.internationalcharactersetcode
+    version: 1
+    contentHash: sha256:4f3dd0f87833b19c
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: isIcmsTaxpayer
+  displayLabel: ' Is Icms Taxpayer'
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  x:
+    ruleId: br.tax-identification-type.isicmstaxpayer
+    version: 1
+    contentHash: sha256:bff5d3a6c6f411ed
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: isNaturalPerson
+  displayLabel: Is Natural Person
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  x:
+    ruleId: br.tax-identification-type.isnaturalperson
+    version: 1
+    contentHash: sha256:8b795548a5ad4e54
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: iso2CountryCode
+  displayLabel: Country
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.telecommunicationNumbers
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[A-Z]{2}$
+  errorMessage: Country is mandatory with a valid 2-character country using only uppercase
+    letters (A-Z).
+  x:
+    ruleId: br.postal-addresses.iso2countrycode.postaladdresses-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:ea2ca8f93e36d9d0
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: iso2CountryCode
+  displayLabel: Country
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[A-Z]{2}$
+  errorMessage: Country is mandatory with a valid 2-character country using only uppercase
+    letters (A-Z).
+  x:
+    ruleId: br.postal-addresses.iso2countrycode.postaladdresses
+    version: 1
+    contentHash: sha256:e8e6347cc0c9dd61
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: iso2CountryCode
+  displayLabel: Country
+  fieldGroupLabel: Tax Identification Type
+  scopeKey: taxInformation.taxIdentificationNumbers
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[A-Z]{2}$
+  errorMessage: Country is mandatory with a valid 2-character country using only uppercase
+    letters (A-Z).
+  x:
+    ruleId: br.tax-identification-type.iso2countrycode.taxinformation-taxidentificationnumbers
+    version: 1
+    contentHash: sha256:c10b238d5f638947
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: iso2CountryCode
+  displayLabel: Country
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.telecommunicationNumbers
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[A-Z]{2}$
+  errorMessage: Country is mandatory with a valid 2-character country using only uppercase
+    letters (A-Z).
+  x:
+    ruleId: br.vendor-contacts.iso2countrycode.vendorcontacts-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:031c6c919e37f628
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: iso2LanguageCode
+  displayLabel: Language
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[A-Z0-9]{2}$
+  errorMessage: Language Code must contain exactly 2 uppercase letters and/or digits.
+  x:
+    ruleId: br.vendor-core-details.iso2languagecode
+    version: 1
+    contentHash: sha256:262a8b144fc37ae2
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: lastName
+  displayLabel: Last Name
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9 '-]{1,128}$
+  errorMessage: Last Name must be between 1 and 128 characters, containing only letters,
+    numbers, spaces, apostrophes, and hyphens.
+  x:
+    ruleId: br.vendor-contacts.lastname.vendorcontacts
+    version: 1
+    contentHash: sha256:78dd43623f83f5a1
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: latitude
+  displayLabel: Latitude
+  fieldGroupLabel: Postal Addresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^(-?([0-8]?\d(\.\d+)?|90(\.0+)?))$
+  errorMessage: Latitude must be between -90 and 90 degrees, allowing numeric characters,
+    decimal point, and optional negative sign, with a maximum length of 10 characters.
+  x:
+    ruleId: br.postal-addresses.latitude
+    version: 1
+    contentHash: sha256:fbcb39679c1ed877
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: longitude
+  displayLabel: Longitude
+  fieldGroupLabel: Postal Addresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^(-?(1[0-7]\d(\.\d+)?|0?\d{1,2}(\.\d+)?|180(\.0+)?))$
+  errorMessage: Please enter a valid Longitude between -180 and 180, allowing numbers,
+    decimal point, and negative sign, with a maximum of 10 characters.
+  x:
+    ruleId: br.postal-addresses.longitude
+    version: 1
+    contentHash: sha256:7b08c9be1af0a8a9
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: notes
+  displayLabel: Notes
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.telecommunicationNumbers
+  isRequired: false
+  isApplicable: false
+  errorMessage: Notes is not applicable for this country.
+  x:
+    ruleId: br.postal-addresses.notes.postaladdresses-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:0614e70b98d98ef3
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: notes
+  displayLabel: Notes
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.electronicAddresses
+  isRequired: false
+  isApplicable: true
+  x:
+    ruleId: br.postal-addresses.notes.postaladdresses-electronicaddresses
+    version: 1
+    contentHash: sha256:df72ec5430214cea
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: notes
+  displayLabel: Notes
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.electronicAddresses
+  isRequired: false
+  isApplicable: true
+  x:
+    ruleId: br.vendor-contacts.notes.vendorcontacts-electronicaddresses
+    version: 1
+    contentHash: sha256:0404048749ff4511
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: notes
+  displayLabel: Notes
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.telecommunicationNumbers
+  isRequired: false
+  isApplicable: false
+  errorMessage: Notes is not applicable for this country.
+  x:
+    ruleId: br.vendor-contacts.notes.vendorcontacts-telecommunicationnumbers
+    version: 1
+    contentHash: sha256:08e73868d36a21cd
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: postOfficeBox
+  displayLabel: PO Box
+  fieldGroupLabel: Postal Addresses
+  relatedFields:
+  - streetName
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9.,:;$%&+\]\[*"( )'\/^\-]{0,10}$
+  errorMessage: 'PO Box must be 10 characters or less and can only contain letters,
+    numbers, and special characters: ., :; $ % & + ] [ * ( )  / ^ -'
+  dependencies:
+  - ruleType: atLeastOne
+    applicableFields:
+    - streetName
+    - postOfficeBox
+    errorMessage: Either Street Name or PO Box is Mandatory.
+  x:
+    ruleId: br.postal-addresses.postofficebox
+    version: 1
+    contentHash: sha256:f14fd8cbe77a199d
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: streetName
+  displayLabel: Street
+  fieldGroupLabel: Postal Addresses
+  relatedFields:
+  - postOfficeBox
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9.,:;$%&+\]\[*"( )'\/^\-]{0,256}$
+  errorMessage: 'Please enter a valid street address, up to 256 characters, containing
+    only letters, numbers, and special characters: ., : ; $ % & + [ ] * ( )  / ^ -.'
+  dependencies:
+  - ruleType: atLeastOne
+    applicableFields:
+    - streetName
+    - postOfficeBox
+    errorMessage: Either Street Name or PO Box is Mandatory.
+  x:
+    ruleId: br.postal-addresses.streetname
+    version: 1
+    contentHash: sha256:37a6dddf95da24f1
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxCategoryCode
+  displayLabel: Tax Classification Type
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[0-9]$
+  errorMessage: Tax Category Code must be a single digit (0-9) and exactly 1 character
+    in length.
+  x:
+    ruleId: br.tax-identification-type.taxcategorycode
+    version: 1
+    contentHash: sha256:6fe1a6c2f7f21108
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: taxIdentificationTypeCode
+  displayLabel: Tax Categorization Group Type
+  fieldGroupLabel: Tax Identification Type
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^[A-Z0-9]{1,20}$
+  errorMessage: Tax Identification Type Code must be 1-20 characters long and contain
+    only uppercase letters and numbers.
+  x:
+    ruleId: br.tax-identification-type.taxidentificationtypecode
+    version: 1
+    contentHash: sha256:fccaa61e1c3d37ff
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: tradingName
+  displayLabel: Trading Name
+  fieldGroupLabel: Vendor Core Details
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^[a-zA-Z0-9.,:;$%&+\]\[*"( )'\/^\-]{3,128}$
+  errorMessage: 'Trading Name is mandatory. Trading Name must be between 3 and 128
+    characters, containing only letters, numbers, and special characters: ., :; $
+    % & + ] [ *  ( )  / ^ -'
+  x:
+    ruleId: br.vendor-core-details.tradingname
+    version: 1
+    contentHash: sha256:26c8330f66df51cf
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: tradingPartnerCode
+  displayLabel: Trading Partner
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: false
+  regexPattern: ^[A-Z]{2,3}\d{2,3}[A-Z]$
+  errorMessage: Trading Partner must be 5-7 characters long, consisting of 2-3 uppercase
+    letters, followed by 2-3 digits, and ending with an uppercase letter.
+  x:
+    ruleId: br.vendor-core-details.tradingpartnercode
+    version: 1
+    contentHash: sha256:ef65b3036c275792
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: vendorGroupType
+  displayLabel: Account Group
+  fieldGroupLabel: Vendor Core Details
+  relatedFields:
+  - tradingPartnerCode
+  - intercompanyActivityTypeCode
+  isRequired: true
+  isApplicable: true
+  regexPattern: ^(ZINT|ZEXT)$
+  errorMessage: Account Group is required. Account Group must be either ZINT or ZEXT,
+    exactly 4 characters long, containing only letters.
+  dependencies:
+  - ruleType: conditional
+    conditions:
+    - fieldName: vendorGroupType
+      operator: equals
+      values:
+      - ZINT
+      action:
+        targetFields:
+        - tradingPartnerCode
+        actionType: makeApplicable
+  - ruleType: conditional
+    conditions:
+    - fieldName: vendorGroupType
+      operator: equals
+      values:
+      - ZINT
+      action:
+        targetFields:
+        - tradingPartnerCode
+        actionType: makeRequired
+    errorMessage: Trading Partner Code is mandatory for Inter-Company vendors (ZINT).
+  - ruleType: conditional
+    conditions:
+    - fieldName: vendorGroupType
+      operator: equals
+      values:
+      - ZINT
+      action:
+        targetFields:
+        - intercompanyActivityTypeCode
+        actionType: makeApplicable
+  - ruleType: conditional
+    conditions:
+    - fieldName: vendorGroupType
+      operator: equals
+      values:
+      - ZINT
+      action:
+        targetFields:
+        - intercompanyActivityTypeCode
+        actionType: makeRequired
+    errorMessage: Intercompany Activity Type Code is mandatory for Inter-Company vendors
+      (ZINT).
+  x:
+    ruleId: br.vendor-core-details.vendorgrouptype
+    version: 1
+    contentHash: sha256:f726bfb224c4aee1
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: vendorStatusReasonCode
+  displayLabel: Status Reason
+  fieldGroupLabel: Vendor Core Details
+  isRequired: false
+  isApplicable: false
+  errorMessage: Vendor Status Reason is automatically determined by the system and
+    is not editable.
+  x:
+    ruleId: br.vendor-core-details.vendorstatusreasoncode
+    version: 1
+    contentHash: sha256:91f31995b9095668
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: webPageAddress
+  displayLabel: Web Page Address
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.electronicAddresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$
+  errorMessage: Please enter a valid web page address, starting with http:// or https://,
+    containing only letters, numbers, dots, and hyphens, with a minimum of 2 characters
+    for the domain extension, and a maximum length of 2083 characters.
+  x:
+    ruleId: br.vendor-contacts.webpageaddress.vendorcontacts-electronicaddresses
+    version: 1
+    contentHash: sha256:e97330129f5a7846
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: webPageAddress
+  displayLabel: Web Page Address
+  fieldGroupLabel: Postal Addresses
+  scopeKey: postalAddresses.electronicAddresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$
+  errorMessage: Please enter a valid web page address, starting with http:// or https://,
+    containing only letters, numbers, dots, and hyphens, with a minimum of 2 characters
+    for the domain extension, and a maximum length of 2083 characters.
+  x:
+    ruleId: br.postal-addresses.webpageaddress.postaladdresses-electronicaddresses
+    version: 1
+    contentHash: sha256:40f7a51def73d86f
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []
+- fieldName: webPageAddress
+  displayLabel: Web Page Address
+  fieldGroupLabel: Vendor Contacts
+  scopeKey: vendorContacts.electronicAddresses
+  isRequired: false
+  isApplicable: true
+  regexPattern: ^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/[^\s]*)?$
+  errorMessage: Please enter a valid web page address, starting with http:// or https://,
+    containing only letters, numbers, dots, and hyphens, with a minimum of 2 characters
+    for the domain extension, and a maximum length of 2083 characters.
+  x:
+    ruleId: br.vendor-contacts.webpageaddress.vendorcontacts-electronicaddresses-2
+    version: 1
+    contentHash: sha256:e97330129f5a7846
+    status: active
+    source: mdm-import
+    createdAt: '2026-08-12T16:20:30.345820Z'
+    updatedAt: '2026-08-12T16:20:30.345820Z'
+    scope: $
+    targets: []
+    effects: []
+    phases:
+    - create
+    - save
+    - submit
+    severity: error
+    severityByPhase: {}
+    priority: 100
+    overrides: []
+    tags: []
+    groundingConfirmations: []

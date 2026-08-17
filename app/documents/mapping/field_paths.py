@@ -94,6 +94,15 @@ WRITABLE_DOC_TYPES = frozenset(
         "IN_PAN_CARD",
         "IN_GST_CERTIFICATE",
         "IN_CANCELLED_CHEQUE",
+        "CN_BUSINESS_LICENSE",
+        "CN_BANK_ACCOUNT_PERMIT",
+        "AE_TRADE_LICENSE",
+        "AE_VAT_CERTIFICATE",
+        "US_W9",
+        "US_VOIDED_CHECK",
+        "US_CERTIFICATE_OF_GOOD_STANDING",
+        "GB_COMPANIES_HOUSE_CERTIFICATE",
+        "GB_VAT_CERTIFICATE",
     }
 )
 

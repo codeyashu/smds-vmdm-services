@@ -1,0 +1,66 @@
+{
+  "countryCode": "US",
+  "version": 1,
+  "bindings": [
+    {
+      "logicalFieldId": "ein",
+      "label": "EIN",
+      "bind": { "kind": "taxSlot", "taxTypeCode": "TAXNO1" },
+      "validator": "ein",
+      "singleton": true
+    },
+    {
+      "logicalFieldId": "legal_name",
+      "label": "Legal name",
+      "bind": { "kind": "scalar", "formPath": "legalName" }
+    },
+    {
+      "logicalFieldId": "trading_name",
+      "label": "Trading name",
+      "bind": { "kind": "scalar", "formPath": "tradingName" }
+    },
+    {
+      "logicalFieldId": "state_registration_number",
+      "label": "State registration number",
+      "bind": { "kind": "unmapped", "key": "stateRegistrationNumber" }
+    },
+    {
+      "logicalFieldId": "bank_account_number",
+      "label": "Bank account number",
+      "bind": { "kind": "bank", "index": 0, "field": "bankAccountNumber" }
+    },
+    {
+      "logicalFieldId": "routing_number",
+      "label": "Routing number",
+      "bind": { "kind": "bank", "index": 0, "field": "routingNumber" }
+    },
+    {
+      "logicalFieldId": "bank_name",
+      "label": "Bank name",
+      "bind": { "kind": "bank", "index": 0, "field": "bankName" }
+    }
+  ],
+  "documents": [
+    {
+      "docType": "US_W9",
+      "writable": true,
+      "attributes": ["ein", "legal_name", "trading_name"]
+    },
+    {
+      "docType": "US_VOIDED_CHECK",
+      "writable": true,
+      "attributes": ["bank_account_number", "routing_number", "bank_name"]
+    },
+    {
+      "docType": "US_CERTIFICATE_OF_GOOD_STANDING",
+      "writable": true,
+      "attributes": ["state_registration_number", "legal_name"]
+    }
+  ],
+  "multiSourceFields": {
+    "legal_name": ["US_W9", "US_CERTIFICATE_OF_GOOD_STANDING"],
+    "trading_name": ["US_W9"]
+  },
+  "nameFuzzyThreshold": 0.88,
+  "addressFuzzyThreshold": 0.8
+}

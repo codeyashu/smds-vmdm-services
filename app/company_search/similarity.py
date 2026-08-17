@@ -55,7 +55,7 @@ async def similarity_with_llm(
         LlmMessage(role="system", text=SYSTEM_PROMPT),
         LlmMessage(role="user", text=json.dumps(payload)),
     ]
-    result = await provider.complete_json(messages)
+    result = await provider.complete_json(messages, trace_name="company_search.similarity")
 
     raw_candidates = result.get("candidates")
     if not isinstance(raw_candidates, list):

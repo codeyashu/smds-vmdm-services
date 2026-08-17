@@ -31,6 +31,20 @@ class NlSearchParseRequest(BaseModel):
     context: NlSearchParseContext | None = None
 
 
+@router.post("/orchestrate")
+async def orchestrate_route(body: NlSearchParseRequest) -> dict[str, Any]:
+    from app.nl_search.orchestrate import orchestrate_nl_search
+
+    provider = get_llm_provider()
+    try:
+        return await orchestrate_nl_search(provider, body.query, body.context)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except Exception as exc:
+        log.warning("nl_search.orchestrate.failed", error=str(exc))
+        raise HTTPException(status_code=502, detail="Failed to parse natural language query.") from exc
+
+
 @router.post("/parse")
 async def parse_route(body: NlSearchParseRequest) -> dict[str, Any]:
     provider = get_llm_provider()

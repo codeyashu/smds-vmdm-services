@@ -1,0 +1,81 @@
+{
+  "countryCode": "CN",
+  "version": 1,
+  "bindings": [
+    {
+      "logicalFieldId": "uscc",
+      "label": "USCC",
+      "bind": { "kind": "taxSlot", "taxTypeCode": "TAXNO1" },
+      "validator": "uscc",
+      "singleton": true
+    },
+    {
+      "logicalFieldId": "legal_name",
+      "label": "Legal name",
+      "bind": { "kind": "scalar", "formPath": "legalName" }
+    },
+    {
+      "logicalFieldId": "trading_name",
+      "label": "Trading name",
+      "bind": { "kind": "scalar", "formPath": "tradingName" }
+    },
+    {
+      "logicalFieldId": "bill_to_street",
+      "label": "Street",
+      "bind": { "kind": "address", "role": "primary", "field": "streetName" }
+    },
+    {
+      "logicalFieldId": "bill_to_building",
+      "label": "Building name",
+      "bind": { "kind": "address", "role": "primary", "field": "buildingName" }
+    },
+    {
+      "logicalFieldId": "bill_to_city",
+      "label": "City",
+      "bind": { "kind": "address", "role": "primary", "field": "cityName" }
+    },
+    {
+      "logicalFieldId": "bill_to_postal_code",
+      "label": "Postal code",
+      "bind": { "kind": "address", "role": "primary", "field": "postalCode" }
+    },
+    {
+      "logicalFieldId": "bank_account_number",
+      "label": "Bank account number",
+      "bind": { "kind": "bank", "index": 0, "field": "bankAccountNumber" }
+    },
+    {
+      "logicalFieldId": "bank_name",
+      "label": "Bank name",
+      "bind": { "kind": "bank", "index": 0, "field": "bankName" }
+    }
+  ],
+  "documents": [
+    {
+      "docType": "CN_BUSINESS_LICENSE",
+      "writable": true,
+      "addressRoles": ["registered_office"],
+      "attributes": [
+        "uscc",
+        "legal_name",
+        "trading_name",
+        "bill_to_street",
+        "bill_to_building",
+        "bill_to_city",
+        "bill_to_postal_code"
+      ]
+    },
+    {
+      "docType": "CN_BANK_ACCOUNT_PERMIT",
+      "writable": true,
+      "attributes": ["bank_account_number", "bank_name"]
+    }
+  ],
+  "multiSourceFields": {
+    "trading_name": ["CN_BUSINESS_LICENSE"],
+    "legal_name": ["CN_BUSINESS_LICENSE"],
+    "bill_to_city": ["CN_BUSINESS_LICENSE"]
+  },
+  "nameFuzzyThreshold": 0.82,
+  "addressFuzzyThreshold": 0.75
+}

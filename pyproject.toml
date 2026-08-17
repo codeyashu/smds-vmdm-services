@@ -15,6 +15,12 @@ dependencies = [
     "sqlmodel>=0.0.22",
     "pillow>=11.0",
     "structlog>=24.4",
+    "langfuse>=2.0",
+    "pydantic-ai>=0.2",
+    "schwifty>=2024.6",
+    "rapidfuzz>=3.9",
+    "jsonpath-ng>=1.6",
+    "pyyaml>=6.0",
 ]
 
 [project.optional-dependencies]

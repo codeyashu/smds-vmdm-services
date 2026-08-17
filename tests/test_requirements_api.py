@@ -124,11 +124,12 @@ def test_update_keeping_own_doc_type_is_not_a_self_conflict():
 
 
 def test_same_doc_type_in_another_country_is_allowed():
+    """Doc type codes are country-prefixed — same logical label, different codes per country."""
     assert client.post(
-        "/v1/doc-requirements", json={"country_code": "IN", "doc_type": "SHARED_DOC", "label": "S"}
+        "/v1/doc-requirements", json={"country_code": "IN", "doc_type": "IN_SHARED_DOC", "label": "S"}
     ).status_code == 201
     assert client.post(
-        "/v1/doc-requirements", json={"country_code": "SG", "doc_type": "SHARED_DOC", "label": "S"}
+        "/v1/doc-requirements", json={"country_code": "SG", "doc_type": "SG_SHARED_DOC", "label": "S"}
     ).status_code == 201
 
 

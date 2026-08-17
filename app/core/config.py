@@ -59,9 +59,32 @@ def get_settings() -> Settings:
     return Settings()
 
 
+def _load_env_file_prefixes(prefixes: tuple[str, ...]) -> None:
+    """Load matching keys from `.env` into os.environ (pydantic Settings only reads DOCAI_* fields)."""
+    import os
+    from pathlib import Path
+
+    env_path = Path(".env")
+    if not env_path.is_file():
+        return
+    for raw_line in env_path.read_text().splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if not any(key.startswith(prefix) for prefix in prefixes):
+            continue
+        if not os.getenv(key):
+            os.environ[key] = value
+
+
 def bootstrap_process_env() -> None:
     """Expose pydantic-loaded `.env` values to `os.environ` for factory helpers."""
     import os
+
+    _load_env_file_prefixes(("LANGFUSE_", "LLM_COST_", "MDM_", "VMDM_", "PORTAL_"))
 
     settings = get_settings()
     for env_key, value in (

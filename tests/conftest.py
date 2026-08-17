@@ -49,7 +49,25 @@ def zero_provider_config(monkeypatch):
 def isolated_docai_db(tmp_path, monkeypatch):
     monkeypatch.setenv("DOCAI_DB_PATH", str(tmp_path / "test.db"))
     from app.requirements import store
+    from app.onboard import run_store
 
     store.reset_engine_for_tests()
+    run_store.reset_engine_for_tests()
     yield
     store.reset_engine_for_tests()
+    run_store.reset_engine_for_tests()
+
+
+@pytest.fixture(autouse=True)
+def isolated_rules_store(tmp_path, monkeypatch):
+    """Rulesets live in ``config/rules/**``, loaded through an ``lru_cache`` keyed only by
+    country code (``app/rules/store.py``) — not by ``RULES_CONFIG_DIR``. Without this
+    fixture, a test that imports a country ruleset would leave it cached in-process and
+    visible to every later test, regardless of which directory that later test points at.
+    """
+    monkeypatch.setenv("RULES_CONFIG_DIR", str(tmp_path / "rules"))
+    from app.rules import store
+
+    store.reset_cache_for_tests()
+    yield
+    store.reset_cache_for_tests()

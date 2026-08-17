@@ -58,8 +58,14 @@ def test_doctypes_tier_ignores_is_mandatory_changes():
     assert tiers["IN_UDYAM_CERTIFICATE"] == 2
 
 
-def test_doctypes_non_in_rejected():
-    assert client.get("/v1/doctypes?country=US").status_code == 422
+def test_doctypes_us_from_playbook():
+    body = client.get("/v1/doctypes?country=US").json()
+    ids = {d["id"] for d in body["docTypes"]}
+    assert {"US_W9", "US_VOIDED_CHECK", "US_CERTIFICATE_OF_GOOD_STANDING"} <= ids
+
+
+def test_doctypes_non_supported_rejected():
+    assert client.get("/v1/doctypes?country=ZZ").status_code == 422
 
 
 def test_extract_rejects_wrong_mime():
@@ -135,3 +141,25 @@ def test_extract_batch_isolates_per_file_errors(monkeypatch):
     assert len(body["results"]) == 2
     assert body["results"][0]["docType"] == "UNKNOWN"
     assert body["results"][1]["docType"] == "IN_GST_CERTIFICATE"
+
+
+def test_extract_batch_skips_duplicate_bytes(monkeypatch):
+    from app.documents.extract import pipeline
+    from tests.fakes import GST_ENVELOPE, FakeLlm, FakeOcr
+
+    monkeypatch.setattr(pipeline, "get_ocr_provider", lambda: FakeOcr())
+    monkeypatch.setattr(pipeline, "get_llm_provider", lambda: FakeLlm([GST_ENVELOPE]))
+
+    content = b"%PDF-1.4 duplicate"
+    files = [
+        ("files", ("gst.pdf", io.BytesIO(content), "application/pdf")),
+        ("files", ("gst-copy.pdf", io.BytesIO(content), "application/pdf")),
+    ]
+    r = client.post("/v1/extract/batch", files=files, data={"countryCode": "IN"})
+    assert r.status_code == 200
+    body = r.json()
+    assert len(body["results"]) == 2
+    assert body["results"][0]["docType"] == "IN_GST_CERTIFICATE"
+    assert body["results"][1]["docType"] == "UNKNOWN"
+    assert "Duplicate upload skipped" in body["results"][1]["warnings"][0]
+    assert body["results"][1]["documentId"] == body["results"][0]["documentId"]

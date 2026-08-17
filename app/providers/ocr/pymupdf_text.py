@@ -7,11 +7,8 @@ Tesseract or a vision LLM on the rendered page images (which this still provides
 
 from __future__ import annotations
 
-import base64
-
 from app.providers.ocr.base import OcrProvider, OcrResult, OcrWord
-
-_RENDER_DPI = 150
+from app.providers.ocr.render import render_page_images_b64
 
 
 class PyMuPdfTextProvider:
@@ -30,7 +27,6 @@ class PyMuPdfTextProvider:
 
         words: list[OcrWord] = []
         text_parts: list[str] = []
-        images: list[str] = []
         try:
             for page_index in range(doc.page_count):
                 page = doc.load_page(page_index)
@@ -38,9 +34,7 @@ class PyMuPdfTextProvider:
                 for w in page.get_text("words"):
                     x0, y0, x1, y1, token = w[0], w[1], w[2], w[3], w[4]
                     words.append(OcrWord(text=token, page=page_index + 1, bbox=[x0, y0, x1, y1]))
-                if self.render_images:
-                    pix = page.get_pixmap(dpi=_RENDER_DPI)
-                    images.append(base64.b64encode(pix.tobytes("png")).decode("ascii"))
+            images = render_page_images_b64(content, mime) if self.render_images else []
             return OcrResult(
                 text="\n".join(text_parts),
                 words=words,

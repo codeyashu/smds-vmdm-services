@@ -28,6 +28,7 @@ class FakeLlmProvider:
         *,
         schema: dict[str, Any] | None = None,
         timeout_s: float = 30.0,
+        trace_name: str | None = None,
     ) -> dict[str, Any]:
         self.calls.append(messages)
         if self.error is not None:
@@ -61,7 +62,7 @@ class FakeLlm:
     def __init__(self, responses: list[dict[str, Any]]):
         self._responses = list(responses)
 
-    async def complete_json(self, messages, *, schema=None, timeout_s=30.0) -> dict[str, Any]:
+    async def complete_json(self, messages, *, schema=None, timeout_s=30.0, trace_name=None) -> dict[str, Any]:
         return self._responses.pop(0)
 
 
@@ -80,7 +81,7 @@ class FailingOnRetryLlm:
         self._retry_exception = retry_exception
         self._calls = 0
 
-    async def complete_json(self, messages, *, schema=None, timeout_s=30.0) -> dict[str, Any]:
+    async def complete_json(self, messages, *, schema=None, timeout_s=30.0, trace_name=None) -> dict[str, Any]:
         self._calls += 1
         if self._calls == 1:
             return self._first_response

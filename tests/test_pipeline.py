@@ -149,9 +149,8 @@ async def test_passing_crosscheck_keeps_pan_and_gstin_pre_selected(monkeypatch):
     assert by_tax["TAXNO4"].pre_selected is True
 
 
-async def test_failing_ifsc_check_does_not_clear_pan_or_gstin_pre_selection(monkeypatch):
-    """A malformed IFSC says nothing about the PAN/GSTIN — only checks that implicate those
-    identifiers may clear their pre-selection."""
+async def test_cheque_block_ignored_on_gst_doc_type(monkeypatch):
+    """Cheque fields on a GST cert envelope are ignored — only the GST block applies."""
     envelope = {
         "doc_type": "IN_GST_CERTIFICATE",
         "doc_type_confidence": 0.95,
@@ -163,11 +162,24 @@ async def test_failing_ifsc_check_does_not_clear_pan_or_gstin_pre_selection(monk
     monkeypatch.setattr(pipeline, "get_llm_provider", lambda: FakeLlm([envelope]))
     result = await _run()
 
-    statuses = {c["id"]: c["status"] for c in result.cross_checks}
-    assert statuses["ifsc_shape"] == "fail"
+    assert not any(p.path.startswith("vendorBankAccounts") for p in result.patches)
     by_tax = {p.tax_type_code: p for p in result.patches if p.tax_type_code}
     assert by_tax["TAXNO3"].pre_selected is True
     assert by_tax["TAXNO4"].pre_selected is True
+
+
+async def test_failing_ifsc_check_on_cancelled_cheque(monkeypatch):
+    envelope = {
+        "doc_type": "IN_CANCELLED_CHEQUE",
+        "doc_type_confidence": 0.95,
+        "cheque": {"ifsc": "NOT-AN-IFSC", "confidence": 0.9},
+    }
+    monkeypatch.setattr(pipeline, "get_ocr_provider", lambda: FakeOcr())
+    monkeypatch.setattr(pipeline, "get_llm_provider", lambda: FakeLlm([envelope]))
+    result = await _run()
+
+    statuses = {c["id"]: c["status"] for c in result.cross_checks}
+    assert statuses["ifsc_shape"] == "fail"
 
 
 async def test_udyam_doc_type_surfaces_as_unmapped_not_a_patch(monkeypatch):
@@ -181,3 +193,82 @@ async def test_udyam_doc_type_surfaces_as_unmapped_not_a_patch(monkeypatch):
     result = await _run()
     assert result.patches == []
     assert any(row["value"] == "UDYAM-MH-01-1234567" for row in result.unmapped)
+
+
+async def test_iec_doc_type_does_not_emit_pan_patches_when_llm_fills_pan_block(monkeypatch):
+    """IEC codes must not bleed into the PAN tax slot even if the model populates pan."""
+    envelope = {
+        "doc_type": "IN_IEC_CERTIFICATE",
+        "doc_type_confidence": 0.99,
+        "pan": {"pan": "AOXPS7707K", "holder_name": "Yogesh Saruparia", "confidence": 0.95},
+        "iec": {"iec_code": "AOXPS7707K", "holder_name": "YASH POLYCHEM INDUSTRIES", "confidence": 0.95},
+    }
+    monkeypatch.setattr(pipeline, "get_ocr_provider", lambda: FakeOcr())
+    monkeypatch.setattr(pipeline, "get_llm_provider", lambda: FakeLlm([envelope]))
+    result = await _run()
+
+    paths = {p.path for p in result.patches}
+    assert "taxInformation.taxIdentificationNumbers.2.taxIdentificationNumber" not in paths
+    assert "_unmapped.iecCode" in paths
+    assert any(p.path == "tradingName" and p.value == "YASH POLYCHEM INDUSTRIES" for p in result.patches)
+
+
+async def test_filename_override_corrects_misclassified_pan_aadhaar(monkeypatch):
+    envelope = {
+        "doc_type": "IN_ADDRESS_PROOF",
+        "doc_type_confidence": 0.99,
+        "address_proof": {
+            "holder_name": "Yogesh Saruparia",
+            "address": {"street_name": "MG Road"},
+            "confidence": 0.9,
+        },
+        "pan": {"pan": "AOXPS7707K", "holder_name": "Yogesh Saruparia", "confidence": 0.95},
+    }
+    monkeypatch.setattr(pipeline, "get_ocr_provider", lambda: FakeOcr())
+    monkeypatch.setattr(pipeline, "get_llm_provider", lambda: FakeLlm([envelope]))
+    result = await pipeline.run_extraction(
+        b"%PDF-fake",
+        "application/pdf",
+        "IN",
+        filename="tax_certificate_pan_aadhaar_card_sole_proprietor.pdf",
+    )
+    assert result.doc_type == "IN_PAN_CARD"
+    assert any(p.path.endswith("taxIdentificationNumber") for p in result.patches)
+
+
+async def test_iec_envelope_ignores_cheque_block(monkeypatch):
+    envelope = {
+        "doc_type": "IN_IEC_CERTIFICATE",
+        "doc_type_confidence": 0.99,
+        "cheque": {"ifsc": "HDFC0001234", "confidence": 0.9},
+        "iec": {"iec_code": "ABCDE1234F", "confidence": 0.9},
+    }
+    monkeypatch.setattr(pipeline, "get_ocr_provider", lambda: FakeOcr())
+    monkeypatch.setattr(pipeline, "get_llm_provider", lambda: FakeLlm([envelope]))
+    result = await _run()
+    assert not any(p.path.startswith("vendorBankAccounts") for p in result.patches)
+
+
+async def test_vision_retry_fills_missing_pan_on_scan(monkeypatch):
+    first = {
+        "doc_type": "IN_PAN_CARD",
+        "doc_type_confidence": 0.95,
+        "pan": {"holder_name": "Yogesh Saruparia", "confidence": 0.8},
+    }
+    second = {
+        "doc_type": "IN_PAN_CARD",
+        "doc_type_confidence": 0.95,
+        "pan": {"holder_name": "Yogesh Saruparia", "confidence": 0.8},
+    }
+    third = {"pan": "ABCDE1234F", "holder_name": "Yogesh Saruparia", "confidence": 0.95}
+    fourth = {"pan": "ABCDE1234F", "confidence": 0.95}
+    monkeypatch.setattr(pipeline, "get_ocr_provider", lambda: FakeOcr(text=""))
+    monkeypatch.setattr(pipeline, "get_llm_provider", lambda: FakeLlm([first, second, third, fourth]))
+    result = await pipeline.run_extraction(
+        b"%PDF-fake",
+        "application/pdf",
+        "IN",
+        filename="tax_certificate_pan_aadhaar_card_sole_proprietor.pdf",
+    )
+    assert result.doc_type == "IN_PAN_CARD"
+    assert any("taxIdentificationNumber" in p.path for p in result.patches)

@@ -87,7 +87,7 @@ async def parse_natural_language_with_llm(
         LlmMessage(role="user", text=query),
     ]
 
-    raw = await provider.complete_json(messages)
+    raw = await provider.complete_json(messages, trace_name="nl_search.parse")
 
     try:
         parsed = NlSearchParams.model_validate(_normalize_llm_raw(raw))
@@ -105,7 +105,8 @@ async def parse_natural_language_with_llm(
                         "JSON only, same shape as instructed."
                     ),
                 ),
-            ]
+            ],
+            trace_name="nl_search.parse_repair",
         )
         parsed = NlSearchParams.model_validate(_normalize_llm_raw(repaired))
 

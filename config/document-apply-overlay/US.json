@@ -1,0 +1,97 @@
+{
+  "countryCode": "US",
+  "updatedAt": "1970-01-01T00:00:00.000Z",
+  "multiSourceFields": {
+    "legalName": [
+      "US_W9",
+      "US_CERTIFICATE_OF_GOOD_STANDING"
+    ],
+    "tradingName": [
+      "US_W9"
+    ]
+  },
+  "documents": [
+    {
+      "docType": "US_W9",
+      "writable": true,
+      "attributes": [
+        {
+          "label": "EIN",
+          "formPath": "taxInformation.taxIdentificationNumbers.0.taxIdentificationNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "US_W9__taxInformation_taxIdentificationNumbers_0_taxIdentificationNumber"
+        },
+        {
+          "label": "Legal name",
+          "formPath": "legalName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "US_W9__legalName"
+        },
+        {
+          "label": "Trading name",
+          "formPath": "tradingName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "US_W9__tradingName"
+        }
+      ]
+    },
+    {
+      "docType": "US_VOIDED_CHECK",
+      "writable": true,
+      "attributes": [
+        {
+          "label": "Bank account number",
+          "formPath": "vendorBankAccounts.0.bankAccountNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "US_VOIDED_CHECK__vendorBankAccounts_0_bankAccountNumber"
+        },
+        {
+          "label": "Routing number",
+          "formPath": "vendorBankAccounts.0.routingNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "US_VOIDED_CHECK__vendorBankAccounts_0_routingNumber"
+        },
+        {
+          "label": "Bank name",
+          "formPath": "vendorBankAccounts.0.bankName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "US_VOIDED_CHECK__vendorBankAccounts_0_bankName"
+        }
+      ]
+    },
+    {
+      "docType": "US_CERTIFICATE_OF_GOOD_STANDING",
+      "writable": true,
+      "attributes": [
+        {
+          "label": "State registration number",
+          "formPath": "_unmapped.stateRegistrationNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": false,
+          "id": "US_CERTIFICATE_OF_GOOD_STANDING___unmapped_stateRegistrationNumber"
+        },
+        {
+          "label": "Legal name",
+          "formPath": "legalName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "id": "US_CERTIFICATE_OF_GOOD_STANDING__legalName"
+        }
+      ]
+    }
+  ]
+}

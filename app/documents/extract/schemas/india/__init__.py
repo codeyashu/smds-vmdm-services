@@ -41,6 +41,7 @@ class GstExtraction(BaseModel):
     trade_name: str | None = None
     constitution_of_business: str | None = None
     principal_place_of_business: ExtractedAddress | None = None
+    additional_places_of_business: list[ExtractedAddress] = Field(default_factory=list)
     date_of_registration: str | None = None
     confidence: float = 0.0
 
@@ -72,6 +73,31 @@ class CoiExtraction(BaseModel):
     confidence: float = 0.0
 
 
+class AddressProofExtraction(BaseModel):
+    holder_name: str | None = None
+    address: ExtractedAddress | None = None
+    confidence: float = 0.0
+
+
+class IecExtraction(BaseModel):
+    iec_code: str | None = Field(default=None, description="10-char Importer Exporter Code")
+    holder_name: str | None = None
+    confidence: float = 0.0
+
+
+class PartnershipExtraction(BaseModel):
+    firm_name: str | None = None
+    registration_number: str | None = None
+    registered_address: ExtractedAddress | None = None
+    confidence: float = 0.0
+
+
+class MtoExtraction(BaseModel):
+    licence_number: str | None = None
+    holder_name: str | None = None
+    confidence: float = 0.0
+
+
 # Every recognised doc type, plus the sentinel for "couldn't classify this document".
 # ExtractionEnvelope.doc_type is typed `str` (not a Literal) deliberately — the pipeline
 # checks membership in this set itself and treats anything else as effectively UNKNOWN,
@@ -83,6 +109,10 @@ ENVELOPE_DOC_TYPES: frozenset[str] = frozenset(
         "IN_CANCELLED_CHEQUE",
         "IN_UDYAM_CERTIFICATE",
         "IN_CERTIFICATE_OF_INCORPORATION",
+        "IN_ADDRESS_PROOF",
+        "IN_IEC_CERTIFICATE",
+        "IN_DEED_OF_PARTNERSHIP",
+        "IN_MTO_IATA_CHA_CERTIFICATE",
         "UNKNOWN",
     }
 )
@@ -98,3 +128,7 @@ class ExtractionEnvelope(BaseModel):
     cheque: ChequeExtraction | None = None
     udyam: UdyamExtraction | None = None
     coi: CoiExtraction | None = None
+    address_proof: AddressProofExtraction | None = None
+    iec: IecExtraction | None = None
+    partnership: PartnershipExtraction | None = None
+    mto: MtoExtraction | None = None

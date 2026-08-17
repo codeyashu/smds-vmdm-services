@@ -1,0 +1,28 @@
+{
+  "countryCode": "GB",
+  "status": "active",
+  "submitPolicy": "advisory",
+  "minTrustToAutoProceed": 70,
+  "connectors": [
+    {
+      "id": "bill_to_address",
+      "type": "bill_to_address_review",
+      "fields": ["address"],
+      "authority": 0.95
+    },
+    {
+      "id": "gb_companies_house",
+      "type": "gb_companies_house_lookup",
+      "fields": ["tax", "tradingName", "address"],
+      "authority": 1.0
+    },
+    {
+      "id": "gb_company_number",
+      "type": "gb_company_number_format",
+      "fields": ["tax"],
+      "authority": 0.85
+    }
+  ],
+  "allowlistedDomains": ["find-and-update.company-information.service.gov.uk", "gov.uk", "api.company-information.service.gov.uk"],
+  "fallbackWebSearch": false
+}

@@ -40,7 +40,7 @@ async def normalize_name_with_llm(
         LlmMessage(role="system", text=SYSTEM_PROMPT),
         LlmMessage(role="user", text=json.dumps(payload)),
     ]
-    result = await provider.complete_json(messages)
+    result = await provider.complete_json(messages, trace_name="company_search.normalize_name")
 
     raw_name = result.get("normalizedName")
     normalized_name = raw_name.strip() if isinstance(raw_name, str) else ""

@@ -1,23 +1,16 @@
-"""MCP-style tool gateway — routes orchestrator stages through named tools to the portal BFF."""
+"""MCP-style tool gateway — routes orchestrator stages through portal BFF (MDM proxy)."""
 
 from __future__ import annotations
 
 from typing import Any
 
+from app.mcp.handlers import (
+    adjudicate_documents_handler,
+    get_vendor_document_extractions_handler,
+    reconcile_address_candidates_handler,
+    resolve_field_conflicts_handler,
+)
 from app.onboard import bff_client
-
-
-async def extract_documents(args: dict[str, Any]) -> dict[str, Any]:
-    country_code = str(args.get("countryCode") or "IN")
-    files = args.get("files") or []
-    decoded = bff_client.decode_upload_files(files)
-    if not decoded:
-        return {"results": []}
-    return await bff_client.post_multipart(
-        "/api/documents/extract/batch",
-        decoded,
-        {"countryCode": country_code},
-    )
 
 
 async def enrich_address(args: dict[str, Any]) -> dict[str, Any]:
@@ -33,21 +26,14 @@ async def search_duplicates(args: dict[str, Any]) -> dict[str, Any]:
     return await bff_client.post_json("/api/vendors/duplicates", args.get("body") or {})
 
 
-async def propose_vendor_patch(args: dict[str, Any]) -> dict[str, Any]:
-    return await bff_client.post_json("/api/onboard/internal/build-plan", args.get("body") or {})
-
-
-async def map_extraction_results(args: dict[str, Any]) -> dict[str, Any]:
-    return await bff_client.post_json("/api/onboard/internal/map-extraction", args.get("body") or {})
-
-
 READ_TOOL_HANDLERS = {
-    "extract_documents": extract_documents,
     "enrich_address": enrich_address,
     "search_company_registry": search_company_registry,
     "search_duplicates": search_duplicates,
-    "propose_vendor_patch": propose_vendor_patch,
-    "map_extraction_results": map_extraction_results,
+    "adjudicate_documents": adjudicate_documents_handler,
+    "get_vendor_document_extractions": get_vendor_document_extractions_handler,
+    "reconcile_address_candidates": reconcile_address_candidates_handler,
+    "resolve_field_conflicts": resolve_field_conflicts_handler,
 }
 
 

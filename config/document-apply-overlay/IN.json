@@ -1,0 +1,344 @@
+{
+  "countryCode": "IN",
+  "documents": [
+    {
+      "docType": "IN_PAN_CARD",
+      "writable": true,
+      "attributes": [
+        {
+          "id": "IN_PAN_CARD__taxInformation_taxIdentificationNumbers_2_taxIdentificationNumber",
+          "label": "TIN/PAN",
+          "formPath": "taxInformation.taxIdentificationNumbers.2.taxIdentificationNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_PAN_CARD__taxInformation_isNaturalPerson",
+          "label": "Is natural person",
+          "formPath": "taxInformation.isNaturalPerson",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_PAN_CARD__tradingName",
+          "label": "Trading name",
+          "formPath": "tradingName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        }
+      ]
+    },
+    {
+      "docType": "IN_GST_CERTIFICATE",
+      "writable": true,
+      "attributes": [
+        {
+          "id": "IN_GST_CERTIFICATE__taxInformation_taxIdentificationNumbers_3_taxIdentificationNumber",
+          "label": "GSTIN",
+          "formPath": "taxInformation.taxIdentificationNumbers.3.taxIdentificationNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_GST_CERTIFICATE__tradingName",
+          "label": "Trading name",
+          "formPath": "tradingName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_GST_CERTIFICATE__legalName",
+          "label": "Legal name",
+          "formPath": "legalName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_GST_CERTIFICATE__postalAddresses_0_regionCode",
+          "label": "Region (state)",
+          "formPath": "postalAddresses.0.regionCode",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_GST_CERTIFICATE__postalAddresses_0_buildingName",
+          "label": "Building name",
+          "formPath": "postalAddresses.0.buildingName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_GST_CERTIFICATE__postalAddresses_0_streetNumber",
+          "label": "Street/house number",
+          "formPath": "postalAddresses.0.streetNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_GST_CERTIFICATE__postalAddresses_0_streetName",
+          "label": "Street",
+          "formPath": "postalAddresses.0.streetName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_GST_CERTIFICATE__postalAddresses_0_district",
+          "label": "District",
+          "formPath": "postalAddresses.0.district",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_GST_CERTIFICATE__postalAddresses_0_cityName",
+          "label": "City",
+          "formPath": "postalAddresses.0.cityName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "needsResolution": "cityCode"
+        },
+        {
+          "id": "IN_GST_CERTIFICATE__postalAddresses_0_postalCode",
+          "label": "Postal code",
+          "formPath": "postalAddresses.0.postalCode",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        }
+      ]
+    },
+    {
+      "docType": "IN_CERTIFICATE_OF_INCORPORATION",
+      "writable": true,
+      "attributes": [
+        {
+          "id": "IN_CERTIFICATE_OF_INCORPORATION___unmapped_cin",
+          "label": "CIN",
+          "formPath": "_unmapped.cin",
+          "enabled": true,
+          "mandatory": false,
+          "writable": false
+        },
+        {
+          "id": "IN_CERTIFICATE_OF_INCORPORATION__tradingName",
+          "label": "Trading name",
+          "formPath": "tradingName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_CERTIFICATE_OF_INCORPORATION__legalName",
+          "label": "Legal name",
+          "formPath": "legalName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        }
+      ]
+    },
+    {
+      "docType": "IN_CANCELLED_CHEQUE",
+      "writable": true,
+      "attributes": [
+        {
+          "id": "IN_CANCELLED_CHEQUE__vendorBankAccounts_0_bankAccountNumber",
+          "label": "Bank account number",
+          "formPath": "vendorBankAccounts.0.bankAccountNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_CANCELLED_CHEQUE__vendorBankAccounts_0_ifsc",
+          "label": "IFSC",
+          "formPath": "vendorBankAccounts.0.ifsc",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "needsResolution": "bankingInstitutionCode"
+        },
+        {
+          "id": "IN_CANCELLED_CHEQUE__vendorBankAccounts_0_bankName",
+          "label": "Bank name",
+          "formPath": "vendorBankAccounts.0.bankName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        }
+      ]
+    },
+    {
+      "docType": "IN_ADDRESS_PROOF",
+      "writable": true,
+      "attributes": [
+        {
+          "id": "IN_ADDRESS_PROOF__tradingName",
+          "label": "Trading name",
+          "formPath": "tradingName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_ADDRESS_PROOF__postalAddresses_0_regionCode",
+          "label": "Region (state)",
+          "formPath": "postalAddresses.0.regionCode",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_ADDRESS_PROOF__postalAddresses_0_buildingName",
+          "label": "Building name",
+          "formPath": "postalAddresses.0.buildingName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_ADDRESS_PROOF__postalAddresses_0_streetNumber",
+          "label": "Street/house number",
+          "formPath": "postalAddresses.0.streetNumber",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_ADDRESS_PROOF__postalAddresses_0_streetName",
+          "label": "Street",
+          "formPath": "postalAddresses.0.streetName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_ADDRESS_PROOF__postalAddresses_0_district",
+          "label": "District",
+          "formPath": "postalAddresses.0.district",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        },
+        {
+          "id": "IN_ADDRESS_PROOF__postalAddresses_0_cityName",
+          "label": "City",
+          "formPath": "postalAddresses.0.cityName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true,
+          "needsResolution": "cityCode"
+        },
+        {
+          "id": "IN_ADDRESS_PROOF__postalAddresses_0_postalCode",
+          "label": "Postal code",
+          "formPath": "postalAddresses.0.postalCode",
+          "enabled": true,
+          "mandatory": false,
+          "writable": true
+        }
+      ]
+    },
+    {
+      "docType": "IN_IEC_CERTIFICATE",
+      "writable": false,
+      "attributes": [
+        {
+          "id": "IN_IEC_CERTIFICATE___unmapped_iecCode",
+          "label": "IEC",
+          "formPath": "_unmapped.iecCode",
+          "enabled": true,
+          "mandatory": false,
+          "writable": false
+        },
+        {
+          "id": "IN_IEC_CERTIFICATE__tradingName",
+          "label": "Trading name",
+          "formPath": "tradingName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": false
+        }
+      ]
+    },
+    {
+      "docType": "IN_DEED_OF_PARTNERSHIP",
+      "writable": false,
+      "attributes": [
+        {
+          "id": "IN_DEED_OF_PARTNERSHIP___unmapped_partnershipRegistrationNo",
+          "label": "Partnership registration number",
+          "formPath": "_unmapped.partnershipRegistrationNo",
+          "enabled": true,
+          "mandatory": false,
+          "writable": false
+        },
+        {
+          "id": "IN_DEED_OF_PARTNERSHIP__tradingName",
+          "label": "Trading name",
+          "formPath": "tradingName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": false
+        },
+        {
+          "id": "IN_DEED_OF_PARTNERSHIP__legalName",
+          "label": "Legal name",
+          "formPath": "legalName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": false
+        }
+      ]
+    },
+    {
+      "docType": "IN_MTO_IATA_CHA_CERTIFICATE",
+      "writable": false,
+      "attributes": [
+        {
+          "id": "IN_MTO_IATA_CHA_CERTIFICATE___unmapped_mtoLicenceNo",
+          "label": "MTO/IATA/CHA licence number",
+          "formPath": "_unmapped.mtoLicenceNo",
+          "enabled": true,
+          "mandatory": false,
+          "writable": false
+        },
+        {
+          "id": "IN_MTO_IATA_CHA_CERTIFICATE__tradingName",
+          "label": "Trading name",
+          "formPath": "tradingName",
+          "enabled": true,
+          "mandatory": false,
+          "writable": false
+        }
+      ]
+    }
+  ],
+  "multiSourceFields": {
+    "tradingName": [
+      "IN_PAN_CARD",
+      "IN_GST_CERTIFICATE",
+      "IN_CERTIFICATE_OF_INCORPORATION",
+      "IN_DEED_OF_PARTNERSHIP",
+      "IN_ADDRESS_PROOF",
+      "IN_IEC_CERTIFICATE",
+      "IN_MTO_IATA_CHA_CERTIFICATE"
+    ],
+    "postalAddresses.0.regionCode": [
+      "IN_GST_CERTIFICATE",
+      "IN_ADDRESS_PROOF"
+    ]
+  },
+  "updatedAt": "2026-08-08T12:00:00.000Z"
+}

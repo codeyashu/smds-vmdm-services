@@ -39,4 +39,4 @@ async def normalize_address_with_llm(
         LlmMessage(role="system", text=SYSTEM_PROMPT),
         LlmMessage(role="user", text=json.dumps(payload)),
     ]
-    return await provider.complete_json(messages)
+    return await provider.complete_json(messages, trace_name="company_search.normalize_address")

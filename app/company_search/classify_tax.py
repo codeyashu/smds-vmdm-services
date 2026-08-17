@@ -36,7 +36,7 @@ async def classify_tax_with_llm(
         LlmMessage(role="system", text=SYSTEM_PROMPT),
         LlmMessage(role="user", text=json.dumps(payload)),
     ]
-    result = await provider.complete_json(messages)
+    result = await provider.complete_json(messages, trace_name="company_search.classify_tax")
 
     assignments = result.get("assignments")
     if not isinstance(assignments, list):
